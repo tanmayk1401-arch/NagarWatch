@@ -1,0 +1,17 @@
+<!-- ==========================================================================
+     NagarWatch - Shared Component: Priority Badge
+     File: templates/components/priority_badge.html
+     Usage: {% include 'components/priority_badge.html' with priority=report.priority %}
+     ========================================================================== -->
+{% if priority == 'urgent' or priority == 'Urgent' %}
+  <span class="priority-badge priority-urgent">Urgent</span>
+{% elif priority == 'high' or priority == 'High' %}
+  <span class="priority-badge priority-high">High</span>
+{% elif priority == 'medium' or priority == 'Medium' %}
+  <span class="priority-badge priority-medium">Medium</span>
+{% elif priority == 'low' or priority == 'Low' %}
+  <span class="priority-badge priority-low">Low</span>
+{% else %}
+  <span class="priority-badge priority-medium">{{ priority|default:"Normal" }}</span>
+{% endif %}
+

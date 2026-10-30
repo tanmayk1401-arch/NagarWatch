@@ -1,0 +1,57 @@
+<!-- ==========================================================================
+     NagarWatch - Shared Component: Footer
+     File: templates/components/footer.html
+     Purpose: Global footer with project information and demonstration disclaimers
+     ========================================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Col 1: Brand & Hackathon Context -->
+      <div>
+        <div class="navbar-brand mb-2">
+          <span class="brand-icon">N</span>
+          <span>NagarWatch</span>
+        </div>
+        <p class="text-muted" style="font-size: 0.875rem; max-width: 360px;">
+          A transparent civic issue reporting and monitoring web platform empowering residents and local administrators to resolve community infrastructure problems.
+        </p>
+        <span class="brand-badge">Hackathon Project — PS 1.1</span>
+      </div>
+
+      <!-- Col 2: Resident Pages -->
+      <div>
+        <h4 class="footer-col-title">Resident Portal</h4>
+        <ul class="footer-links">
+          <li><a href="{% url 'resident_dashboard' %}">Resident Dashboard</a></li>
+          <li><a href="{% url 'report_issue' %}">Report a Problem</a></li>
+          <li><a href="{% url 'explore_issues' %}">Explore All Reports</a></li>
+          <li><a href="{% url 'map_view' %}">Interactive Map</a></li>
+          <li><a href="{% url 'my_reports' %}">My Submissions</a></li>
+          <li><a href="{% url 'notifications' %}">Notifications</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Administration & Account -->
+      <div>
+        <h4 class="footer-col-title">Administration</h4>
+        <ul class="footer-links">
+          <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+          <li><a href="{% url 'admin_moderation' %}">Issue Moderation</a></li>
+          <li><a href="{% url 'login' %}">Resident / Admin Sign In</a></li>
+          <li><a href="{% url 'register' %}">Create Account</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="footer-bottom">
+      <div>
+        &copy; 2026 <strong>NagarWatch Team</strong>. Built for Hackathon PS 1.1.
+      </div>
+      <div class="text-muted">
+        Frontend Demonstration Only &bull; All data shown is mock data.
+      </div>
+    </div>
+  </div>
+</footer>
+

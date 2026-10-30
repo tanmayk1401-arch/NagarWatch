@@ -1,0 +1,19 @@
+<!-- ==========================================================================
+     NagarWatch - Shared Component: Status Badge
+     File: templates/components/status_badge.html
+     Usage: {% include 'components/status_badge.html' with status=report.status label=report.status_display %}
+     ========================================================================== -->
+{% if status == 'pending' or status == 'Pending' %}
+  <span class="status-badge status-pending">Pending Review</span>
+{% elif status == 'verified' or status == 'Verified' %}
+  <span class="status-badge status-verified">Verified</span>
+{% elif status == 'in-progress' or status == 'in_progress' or status == 'In Progress' %}
+  <span class="status-badge status-in-progress">In Progress</span>
+{% elif status == 'resolved' or status == 'Resolved' %}
+  <span class="status-badge status-resolved">Resolved</span>
+{% elif status == 'rejected' or status == 'Rejected' %}
+  <span class="status-badge status-rejected">Rejected</span>
+{% else %}
+  <span class="status-badge status-pending">{{ label|default:status|default:"Pending" }}</span>
+{% endif %}
+

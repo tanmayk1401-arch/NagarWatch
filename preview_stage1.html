@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NagarWatch &bull; Stage 1 Frontend Foundation Preview</title>
+
+  <!-- Stage 1 CSS Stylesheets -->
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/components.css">
+  <link rel="stylesheet" href="static/css/responsive.css">
+
+  <style>
+    /* ── Preview-page-only styles ──────────────────────────────────────────── */
+    .preview-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-8);
+      box-shadow: var(--shadow-sm);
+    }
+    .preview-section-header {
+      border-bottom: 2px solid var(--color-surface-alt);
+      padding-bottom: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+    .preview-tag {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background-color: var(--color-primary-subtle);
+      border: 1px solid var(--color-primary-border);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Demo Disclaimer Banner -->
+  <div class="demo-disclaimer-banner" role="status">
+    <strong>Demo Preview</strong>
+    <span>Stage 1: Shared Foundation &amp; Design System &bull; Standalone Browser Preview (No Django required to view)</span>
+  </div>
+
+  <!-- Shared Top Navigation Bar Component -->
+  <header class="site-header" id="top">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <!-- Brand -->
+        <a href="#top" class="navbar-brand">
+          <span class="brand-icon">N</span>
+          <span>NagarWatch</span>
+          <span class="brand-badge">PS 1.1</span>
+        </a>
+
+        <!-- Mobile Toggler with accessible attributes -->
+        <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="navbarCollapse" aria-label="Toggle navigation">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Links and Actions -->
+        <div class="navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav">
+            <li><a href="#top" class="nav-link active">Dashboard</a></li>
+            <li><a href="#cards" class="nav-link">Explore Issues</a></li>
+            <li><a href="#forms" class="nav-link">Report Issue</a></li>
+            <li><a href="#badges" class="nav-link">Badges</a></li>
+            <li><a href="#empty-state" class="nav-link">Empty State</a></li>
+            <li><a href="#alerts" class="nav-link">Notifications</a></li>
+          </ul>
+
+          <div class="navbar-actions">
+            <!-- View Mode Switcher -->
+            <div class="view-mode-toggle" title="Switch demonstration view">
+              <button type="button" class="view-mode-btn active">Resident</button>
+              <button type="button" class="view-mode-btn">Admin</button>
+            </div>
+            <!-- Auth Button -->
+            <a href="#forms" class="btn btn-sm btn-outline">Sign In</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Showcase Content -->
+  <main class="main-content" id="main-content">
+    <div class="container">
+
+      <!-- Hero Introduction Banner -->
+      <div style="background-color: #1D4ED8; color: #ffffff; padding: var(--space-8); border-radius: var(--radius-xl); margin-bottom: var(--space-8); box-shadow: var(--shadow-md);">
+        <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: var(--radius-full); font-size: 0.8125rem; font-weight: 600; text-transform: uppercase;">Stage 1 Complete</span>
+        <h1 style="color: #ffffff; margin-top: var(--space-3); margin-bottom: var(--space-2); font-size: 2.25rem;">NagarWatch Design System &amp; Shared Foundation</h1>
+        <p style="color: #BFDBFE; max-width: 650px; margin-bottom: var(--space-4); font-size: 1.0625rem;">
+          This preview confirms that all foundational CSS tokens, shared typography, button designs, alerts, status tags, report cards, and responsive navigation components are functioning correctly.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; cursor: default;">HTML5 &amp; CSS3</span>
+          <span class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; cursor: default;">Vanilla JavaScript</span>
+          <span class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; cursor: default;">Django Template Ready</span>
+          <span class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; cursor: default;">No React</span>
+        </div>
+      </div>
+
+      <!-- Section 1: Alert Components -->
+      <section class="preview-section" id="alerts">
+        <div class="preview-section-header">
+          <span class="preview-tag">Shared Component 1</span>
+          <h2>Alert Banners (Dismissible)</h2>
+          <p class="text-muted">Click the &times; button on the right to test smooth client-side dismissal.</p>
+        </div>
+
+        <div class="alert alert-info">
+          <div class="alert-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title">Information Notice</div>
+            <div>Demonstration alert: Backend integration points are cleanly identified across all templates.</div>
+          </div>
+          <button type="button" class="alert-close" aria-label="Dismiss alert" title="Dismiss alert">&times;</button>
+        </div>
+
+        <div class="alert alert-success">
+          <div class="alert-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title">Submission Successful</div>
+            <div>Issue report #NW-1042 was registered locally in mock browser state.</div>
+          </div>
+          <button type="button" class="alert-close" aria-label="Dismiss alert" title="Dismiss alert">&times;</button>
+        </div>
+
+        <div class="alert alert-warning">
+          <div class="alert-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title">Under Review</div>
+            <div>Municipal staff has scheduled an on-site field verification for Sector 7.</div>
+          </div>
+          <button type="button" class="alert-close" aria-label="Dismiss alert" title="Dismiss alert">&times;</button>
+        </div>
+
+        <div class="alert alert-danger">
+          <div class="alert-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title">Critical Hazard Alert</div>
+            <div>Open live electric cable reported near Park Street entrance. Dispatched with top priority.</div>
+          </div>
+          <button type="button" class="alert-close" aria-label="Dismiss alert" title="Dismiss alert">&times;</button>
+        </div>
+      </section>
+
+      <!-- Section 2: Badges -->
+      <section class="preview-section" id="badges">
+        <div class="preview-section-header">
+          <span class="preview-tag">Shared Component 2 &amp; 3</span>
+          <h2>Civic Status Badges &amp; Priority Badges</h2>
+          <p class="text-muted">High-contrast, accessible status indicators that follow the PRD requirements.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: var(--space-3);">Status Badges</h3>
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="status-badge status-pending">Pending Review</span>
+              <span class="status-badge status-verified">Verified</span>
+              <span class="status-badge status-in-progress">In Progress</span>
+              <span class="status-badge status-resolved">Resolved</span>
+              <span class="status-badge status-rejected">Rejected</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: var(--space-3);">Priority Badges</h3>
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="priority-badge priority-low">Low</span>
+              <span class="priority-badge priority-medium">Medium</span>
+              <span class="priority-badge priority-high">High</span>
+              <span class="priority-badge priority-urgent">Urgent</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Report Cards Grid -->
+      <section class="preview-section" id="cards">
+        <div class="preview-section-header">
+          <span class="preview-tag">Shared Component 4</span>
+          <h2>Report Cards Component</h2>
+          <p class="text-muted">Standardized issue preview card used in Resident Dashboard, Explore Issues, and My Reports.</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+          <!-- Card 1 -->
+          <article class="report-card">
+            <div class="report-card-media" style="background: linear-gradient(135deg, #e2e8f0, #cbd5e1);">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              <span class="report-card-category-tag">Roads &amp; Footpaths</span>
+            </div>
+            <div class="report-card-body">
+              <h3 class="report-card-title">Large Dangerous Pothole near MG Road Flyover</h3>
+              <div class="report-card-meta">
+                <div class="report-card-meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>MG Road, North Lane, Ward 4</span>
+                </div>
+                <div class="report-card-meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <span>Reported 2 hours ago</span>
+                </div>
+              </div>
+              <div class="report-card-badges">
+                <span class="status-badge status-pending">Pending Review</span>
+                <span class="priority-badge priority-urgent">Urgent</span>
+              </div>
+            </div>
+            <div class="report-card-footer">
+              <span class="text-muted" style="font-size: 0.75rem;">ID: #NW-201</span>
+              <a href="#cards" class="btn btn-sm btn-outline">View Details &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="report-card">
+            <div class="report-card-media" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+              <span class="report-card-category-tag">Streetlights</span>
+            </div>
+            <div class="report-card-body">
+              <h3 class="report-card-title">Broken Streetlight causing safety hazard at night</h3>
+              <div class="report-card-meta">
+                <div class="report-card-meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>Sector 4, Main Market</span>
+                </div>
+                <div class="report-card-meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <span>Reported Yesterday</span>
+                </div>
+              </div>
+              <div class="report-card-badges">
+                <span class="status-badge status-verified">Verified</span>
+                <span class="priority-badge priority-medium">Medium</span>
+              </div>
+            </div>
+            <div class="report-card-footer">
+              <span class="text-muted" style="font-size: 0.75rem;">ID: #NW-198</span>
+              <a href="#cards" class="btn btn-sm btn-outline">View Details &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="report-card">
+            <div class="report-card-media" style="background: linear-gradient(135deg, #F0FDFA, #CCFBF1);">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+              <span class="report-card-category-tag">Water &amp; Drainage</span>
+            </div>
+            <div class="report-card-body">
+              <h3 class="report-card-title">Major Drinking Water Pipeline Leakage</h3>
+              <div class="report-card-meta">
+                <div class="report-card-meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>Near City General Hospital</span>
+                </div>
+                <div class="report-card-meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <span>Reported 3 days ago</span>
+                </div>
+              </div>
+              <div class="report-card-badges">
+                <span class="status-badge status-in-progress">In Progress</span>
+                <span class="priority-badge priority-high">High</span>
+              </div>
+            </div>
+            <div class="report-card-footer">
+              <span class="text-muted" style="font-size: 0.75rem;">ID: #NW-175</span>
+              <a href="#cards" class="btn btn-sm btn-outline">View Details &rarr;</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Section 4: Empty State Component -->
+      <section class="preview-section" id="empty-state">
+        <div class="preview-section-header">
+          <span class="preview-tag">Shared Component 5</span>
+          <h2>Empty State Component</h2>
+          <p class="text-muted">Displays user-friendly guidance when a search, filter, or list returns 0 items.</p>
+        </div>
+
+        <div class="empty-state">
+          <div class="empty-state-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </div>
+          <h3 class="empty-state-title">No Matching Civic Reports Found</h3>
+          <p class="empty-state-description">We couldn't find any issues matching your active filter. Try resetting your search filters or submit a new report.</p>
+          <a href="#top" class="btn btn-primary btn-sm">Clear Active Filters</a>
+        </div>
+      </section>
+
+      <!-- Section 5: Buttons and Form Controls -->
+      <section class="preview-section" id="forms">
+        <div class="preview-section-header">
+          <span class="preview-tag">Foundation Utilities</span>
+          <h2>Buttons &amp; Form Controls</h2>
+          <p class="text-muted">Foundation elements ready to be utilized in Stage 2 (Auth) and Stage 3 (Resident Forms).</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: var(--space-3);">Button Styles &amp; Interactive States</h3>
+            <div class="flex flex-wrap gap-2 items-center mb-4">
+              <button type="button" class="btn btn-primary">Primary Action</button>
+              <button type="button" class="btn btn-secondary">Secondary</button>
+              <button type="button" class="btn btn-outline">Outline</button>
+              <button type="button" class="btn btn-danger">Danger</button>
+            </div>
+            <div class="flex flex-wrap gap-2 items-center mb-4">
+              <button type="button" class="btn btn-sm btn-primary">Small</button>
+              <button type="button" class="btn btn-primary">Default</button>
+              <button type="button" class="btn btn-lg btn-primary">Large</button>
+            </div>
+            <div class="flex flex-wrap gap-2 items-center">
+              <button type="button" class="btn btn-primary" disabled title="Disabled state">Disabled State</button>
+              <button type="button" class="btn btn-outline" disabled title="Disabled outline">Disabled Outline</button>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: var(--space-3);">Form Controls with Accessible States</h3>
+            <div class="form-group">
+              <label class="form-label" for="sample-input">Sample Input Field <span class="required" aria-hidden="true">*</span></label>
+              <input type="text" id="sample-input" class="form-control" placeholder="e.g. Enter issue title..." value="Pothole near street corner" required aria-describedby="sample-hint">
+              <div class="form-hint" id="sample-hint">Provide a concise title that clearly describes the issue.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sample-error">Input with Validation Error State <span class="required" aria-hidden="true">*</span></label>
+              <input type="email" id="sample-error" class="form-control is-invalid" value="invalid@example" aria-invalid="true" aria-describedby="sample-error-msg">
+              <div class="form-error is-visible" id="sample-error-msg" role="alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>Please enter a valid email address.</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sample-disabled">Disabled Field State</label>
+              <input type="text" id="sample-disabled" class="form-control" value="System Reference ID: #NW-DEMO-2026" disabled>
+              <div class="form-hint">Disabled fields show clear visual affordance and prevent input.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Shared Site Footer Component -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="navbar-brand mb-2">
+            <span class="brand-icon">N</span>
+            <span>NagarWatch</span>
+          </div>
+          <p class="text-muted" style="font-size: 0.875rem; max-width: 360px;">
+            A transparent civic issue reporting and monitoring web platform empowering residents and local administrators to resolve community infrastructure problems.
+          </p>
+          <span class="brand-badge">Hackathon Project — PS 1.1</span>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Resident Portal</h4>
+          <ul class="footer-links">
+            <li><a href="#top">Resident Dashboard</a></li>
+            <li><a href="#forms">Report a Problem</a></li>
+            <li><a href="#cards">Explore All Reports</a></li>
+            <li><a href="#top">Interactive Map</a></li>
+            <li><a href="#top">My Submissions</a></li>
+            <li><a href="#alerts">Notifications</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Administration</h4>
+          <ul class="footer-links">
+            <li><a href="#top">Admin Dashboard</a></li>
+            <li><a href="#top">Issue Moderation</a></li>
+            <li><a href="#forms">Resident / Admin Sign In</a></li>
+            <li><a href="#forms">Create Account</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 <strong>NagarWatch Team</strong>. Built for Hackathon PS 1.1.
+        </div>
+        <div class="text-muted">
+          Frontend Demonstration Only &bull; All data shown is mock data.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Shared Base JavaScript -->
+  <script src="static/js/base.js"></script>
+</body>
+</html>
+

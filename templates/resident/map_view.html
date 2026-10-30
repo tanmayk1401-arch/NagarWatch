@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- ==========================================================================
+     NagarWatch - Page Template: Interactive Map View
+     File: templates/resident/map_view.html
+     Purpose: Geographical visualization of community issues with Leaflet & OSM
+     ========================================================================== -->
+
+{% block title %}Interactive City Map &bull; NagarWatch{% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet CSS from CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="{% static 'css/pages/map_view.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div class="map-page-header">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <div>
+        <h1 class="mb-1">Interactive Civic Map</h1>
+        <p class="text-muted" style="margin-bottom: 0;">Explore geographic distribution of civic issues reported across city neighborhoods.</p>
+      </div>
+      <div>
+        <a href="{% url 'explore_issues' %}" class="btn btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          <span>Switch to List View</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Controls & Filter Toolbar -->
+  <section class="map-controls-card" aria-label="Map Filtering Controls">
+    <div class="map-filter-group">
+      <!-- Category Filter -->
+      <div>
+        <select id="mapCategoryFilter" class="form-control" aria-label="Filter pins by category">
+          <option value="">All Categories</option>
+          <option value="Roads & Footpaths">Roads &amp; Footpaths</option>
+          <option value="Streetlights">Streetlights</option>
+          <option value="Water & Drainage">Water &amp; Drainage</option>
+          <option value="Garbage & Waste">Garbage &amp; Waste</option>
+        </select>
+      </div>
+
+      <!-- Status Filter -->
+      <div>
+        <select id="mapStatusFilter" class="form-control" aria-label="Filter pins by status">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending Review</option>
+          <option value="verified">Verified</option>
+          <option value="in-progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live Active Pin Counter -->
+    <div>
+      <span class="status-badge status-verified" id="mapMarkerCount">Loading Pins...</span>
+    </div>
+  </section>
+
+  <!-- Leaflet Map Canvas -->
+  <section class="map-canvas-container" aria-label="Geographic Issue Map">
+    <div id="leafletMap" role="region" aria-label="City Map showing issue locations"></div>
+  </section>
+
+  <!-- Information Notice -->
+  <div class="map-fallback-banner" role="status">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+    <span>
+      <strong>Map Details:</strong> Pins represent verified coordinates from citizen submissions. Only records with valid latitude/longitude coordinates are plotted.
+    </span>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Leaflet JS from CDN -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{% static 'js/mock_data.js' %}"></script>
+<script src="{% static 'js/map_view.js' %}"></script>
+{% endblock %}
+

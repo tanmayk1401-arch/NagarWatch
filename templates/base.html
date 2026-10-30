@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NagarWatch — Civic Issue Reporting and Monitoring Web Platform (PS 1.1)">
+  <title>{% block title %}NagarWatch &bull; Civic Issue Reporting{% endblock %}</title>
+
+  <!-- Shared Global Stylesheets -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+  <!-- Block for Page-Specific Stylesheets -->
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <!-- Top Demonstration Disclaimer Banner (Frontend-Only Requirement) -->
+  <div class="demo-disclaimer-banner" role="status">
+    <strong>Demo UI</strong>
+    <span>NagarWatch Civic Tech Frontend (PS 1.1) &bull; Demonstration data only; no backend database connected.</span>
+  </div>
+
+  <!-- Shared Top Navigation Bar -->
+  {% include 'components/navbar.html' %}
+
+  <!-- Main Content Area -->
+  <main class="main-content" id="main-content">
+    {% block content %}
+    <!-- Page specific content will be injected here by child templates -->
+    {% endblock %}
+  </main>
+
+  <!-- Shared Footer -->
+  {% include 'components/footer.html' %}
+
+  <!-- Shared Global JavaScript -->
+  <script src="{% static 'js/base.js' %}"></script>
+
+  <!-- Block for Page-Specific JavaScript -->
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NagarWatch &bull; Stage 2 Authentication Preview</title>
+
+  <!-- Stage 1 & Stage 2 Stylesheets -->
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/components.css">
+  <link rel="stylesheet" href="static/css/responsive.css">
+  <link rel="stylesheet" href="static/css/pages/auth.css">
+
+  <style>
+    /* Preview tab bar styling */
+    .preview-tab-bar {
+      display: inline-flex;
+      background-color: var(--color-surface);
+      padding: 4px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-sm);
+      margin: var(--space-4) auto var(--space-6);
+    }
+    .preview-tab-btn {
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .preview-tab-btn.active {
+      background-color: var(--color-primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(29, 78, 216, 0.25);
+    }
+    .auth-view-panel {
+      display: none;
+      animation: fadeIn 0.3s ease-out both;
+    }
+    .auth-view-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Demo Disclaimer Banner -->
+  <div class="demo-disclaimer-banner" role="status">
+    <strong>Stage 2 Preview</strong>
+    <span>Authentication Interfaces &bull; Standalone Browser Preview (No Django server required)</span>
+  </div>
+
+  <!-- Shared Top Navigation Bar -->
+  <header class="site-header" id="top">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <!-- Brand -->
+        <a href="preview_stage1.html" class="navbar-brand">
+          <span class="brand-icon">N</span>
+          <span>NagarWatch</span>
+          <span class="brand-badge">PS 1.1</span>
+        </a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="navbarCollapse" aria-label="Toggle navigation">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Links and Actions -->
+        <div class="navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav">
+            <li><a href="preview_stage1.html" class="nav-link">&larr; Back to Stage 1 Preview</a></li>
+          </ul>
+
+          <div class="navbar-actions">
+            <!-- View Mode Switcher -->
+            <div class="view-mode-toggle" title="Switch demonstration view">
+              <button type="button" class="view-mode-btn active">Resident</button>
+              <button type="button" class="view-mode-btn">Admin</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Showcase Content -->
+  <main class="main-content">
+    <div class="container text-center">
+      
+      <!-- Interactive Screen Switcher Bar -->
+      <div class="preview-tab-bar" role="tablist" aria-label="Authentication Screens">
+        <button type="button" class="preview-tab-btn active" id="tabLogin" role="tab" aria-selected="true" aria-controls="panelLogin">
+          1. Sign In Template
+        </button>
+        <button type="button" class="preview-tab-btn" id="tabRegister" role="tab" aria-selected="false" aria-controls="panelRegister">
+          2. Register Template
+        </button>
+      </div>
+
+    </div>
+
+    <!-- PANEL 1: LOGIN TEMPLATE PREVIEW -->
+    <div class="auth-view-panel active" id="panelLogin" role="tabpanel" aria-labelledby="tabLogin">
+      <div class="container auth-wrapper">
+        <div class="auth-card">
+          <!-- Card Header -->
+          <div class="auth-header">
+            <div class="auth-logo-badge" aria-hidden="true">N</div>
+            <h1 class="auth-title">Sign in to NagarWatch</h1>
+            <p class="auth-subtitle">Report local civic issues, track fixes, or moderate reports</p>
+          </div>
+
+          <!-- Alert Container for Client-Side Validation Feedback -->
+          <div id="authFeedback" aria-live="polite"></div>
+
+          <!-- Demo Credentials Helper Box -->
+          <div class="demo-credentials-box">
+            <strong>Demonstration Portal Notice</strong>
+            <div class="demo-credentials-list">
+              <span>&bull; <strong>Demo Resident:</strong> resident@nagarwatch.org / demo123</span>
+              <span>&bull; <strong>Demo Admin:</strong> admin@nagarwatch.org / admin123</span>
+            </div>
+          </div>
+
+          <!-- Login Form -->
+          <form id="loginForm" novalidate>
+            <!-- Email or Username Field -->
+            <div class="form-group">
+              <label class="form-label" for="loginIdentifier">
+                Email or Username <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="loginIdentifier"
+                name="identifier"
+                class="form-control"
+                placeholder="e.g. resident@nagarwatch.org"
+                autocomplete="username"
+                required
+                aria-describedby="loginIdentifierError"
+              >
+              <div class="form-error" id="loginIdentifierError" role="alert"></div>
+            </div>
+
+            <!-- Password Field with Show/Hide Toggle -->
+            <div class="form-group">
+              <label class="form-label" for="loginPassword">
+                Password <span class="required" aria-hidden="true">*</span>
+              </label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  id="loginPassword"
+                  name="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                  aria-describedby="loginPasswordError"
+                >
+                <button
+                  type="button"
+                  class="btn-password-toggle"
+                  data-target="loginPassword"
+                  aria-label="Show password"
+                  title="Toggle password visibility"
+                >
+                  <!-- Eye Open Icon -->
+                  <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  <!-- Eye Closed Icon -->
+                  <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;" aria-hidden="true">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                  </svg>
+                </button>
+              </div>
+              <div class="form-error" id="loginPasswordError" role="alert"></div>
+            </div>
+
+            <!-- Action Row: Remember Me & Forgot Password -->
+            <div class="auth-actions-row">
+              <label class="form-check">
+                <input type="checkbox" id="rememberMe" class="form-check-input">
+                <span class="form-check-label">Remember me</span>
+              </label>
+              <a href="#forgot" class="text-muted" onclick="alert('Forgot password will connect to your team\'s email service in future backend integration.'); return false;">
+                Forgot password?
+              </a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              <span>Sign In</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </form>
+
+          <!-- Footer Switch to Registration -->
+          <div class="auth-footer">
+            <span>Don't have an account?</span>
+            <a href="javascript:void(0)" id="linkToRegister">Create account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: REGISTRATION TEMPLATE PREVIEW -->
+    <div class="auth-view-panel" id="panelRegister" role="tabpanel" aria-labelledby="tabRegister">
+      <div class="container auth-wrapper">
+        <div class="auth-card">
+          <!-- Card Header -->
+          <div class="auth-header">
+            <div class="auth-logo-badge" aria-hidden="true">N</div>
+            <h1 class="auth-title">Create your account</h1>
+            <p class="auth-subtitle">Join your local community to report and track infrastructure issues</p>
+          </div>
+
+          <!-- Alert Container for Client-Side Validation Feedback -->
+          <div id="authFeedbackReg" aria-live="polite"></div>
+
+          <!-- Demonstration Notice -->
+          <div class="demo-credentials-box">
+            <strong>Frontend Demonstration Notice</strong>
+            <div class="demo-credentials-list">
+              <span>&bull; No actual database account is created.</span>
+              <span>&bull; Client-side validation checks your inputs live in browser memory.</span>
+            </div>
+          </div>
+
+          <!-- Registration Form -->
+          <form id="registerForm" novalidate>
+            <!-- Full Name Field -->
+            <div class="form-group">
+              <label class="form-label" for="regFullName">
+                Full Name <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="regFullName"
+                name="full_name"
+                class="form-control"
+                placeholder="e.g. Divya Sharma"
+                autocomplete="name"
+                required
+                aria-describedby="regFullNameError"
+              >
+              <div class="form-error" id="regFullNameError" role="alert"></div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+              <label class="form-label" for="regEmail">
+                Email Address <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email"
+                id="regEmail"
+                name="email"
+                class="form-control"
+                placeholder="e.g. name@example.com"
+                autocomplete="email"
+                required
+                aria-describedby="regEmailError"
+              >
+              <div class="form-error" id="regEmailError" role="alert"></div>
+            </div>
+
+            <!-- Password Field with Show/Hide Toggle -->
+            <div class="form-group">
+              <label class="form-label" for="regPassword">
+                Create Password <span class="required" aria-hidden="true">*</span>
+              </label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  id="regPassword"
+                  name="password"
+                  class="form-control"
+                  placeholder="At least 6 characters"
+                  autocomplete="new-password"
+                  required
+                  aria-describedby="regPasswordError"
+                >
+                <button
+                  type="button"
+                  class="btn-password-toggle"
+                  data-target="regPassword"
+                  aria-label="Show password"
+                  title="Toggle password visibility"
+                >
+                  <!-- Eye Open Icon -->
+                  <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  <!-- Eye Closed Icon -->
+                  <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;" aria-hidden="true">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                  </svg>
+                </button>
+              </div>
+              <div class="form-error" id="regPasswordError" role="alert"></div>
+            </div>
+
+            <!-- Confirm Password Field with Show/Hide Toggle -->
+            <div class="form-group">
+              <label class="form-label" for="regConfirmPassword">
+                Confirm Password <span class="required" aria-hidden="true">*</span>
+              </label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  id="regConfirmPassword"
+                  name="confirm_password"
+                  class="form-control"
+                  placeholder="Re-enter your password"
+                  autocomplete="new-password"
+                  required
+                  aria-describedby="regConfirmPasswordError"
+                >
+                <button
+                  type="button"
+                  class="btn-password-toggle"
+                  data-target="regConfirmPassword"
+                  aria-label="Show password"
+                  title="Toggle password visibility"
+                >
+                  <!-- Eye Open Icon -->
+                  <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  <!-- Eye Closed Icon -->
+                  <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;" aria-hidden="true">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                  </svg>
+                </button>
+              </div>
+              <div class="form-error" id="regConfirmPasswordError" role="alert"></div>
+            </div>
+
+            <!-- Terms and Guidelines Checkbox -->
+            <div class="form-group mb-4">
+              <label class="form-check">
+                <input type="checkbox" id="regTerms" class="form-check-input" required aria-describedby="regTermsError">
+                <span class="form-check-label">
+                  I agree to the <a href="#terms" onclick="alert('Civic Reporting Guidelines: Reports must be genuine community concerns with respectful language.'); return false;">Community Guidelines</a> for civic issue reporting.
+                </span>
+              </label>
+              <div class="form-error" id="regTermsError" role="alert"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              <span>Create Account</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </form>
+
+          <!-- Footer Switch to Login -->
+          <div class="auth-footer">
+            <span>Already have an account?</span>
+            <a href="javascript:void(0)" id="linkToLogin">Sign in here</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Shared Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 <strong>NagarWatch Team</strong>. Built for Hackathon PS 1.1.
+        </div>
+        <div class="text-muted">
+          Stage 2: Authentication Templates &bull; Demonstration Data Only.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="static/js/base.js"></script>
+  <script src="static/js/auth.js"></script>
+  <script>
+    // Tab Switcher between Login and Registration for Standalone Preview
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegister = document.getElementById('tabRegister');
+    const panelLogin = document.getElementById('panelLogin');
+    const panelRegister = document.getElementById('panelRegister');
+    const linkToRegister = document.getElementById('linkToRegister');
+    const linkToLogin = document.getElementById('linkToLogin');
+
+    function showLogin() {
+      tabLogin.classList.add('active');
+      tabLogin.setAttribute('aria-selected', 'true');
+      tabRegister.classList.remove('active');
+      tabRegister.setAttribute('aria-selected', 'false');
+      panelLogin.classList.add('active');
+      panelRegister.classList.remove('active');
+    }
+
+    function showRegister() {
+      tabRegister.classList.add('active');
+      tabRegister.setAttribute('aria-selected', 'true');
+      tabLogin.classList.remove('active');
+      tabLogin.setAttribute('aria-selected', 'false');
+      panelRegister.classList.add('active');
+      panelLogin.classList.remove('active');
+    }
+
+    if (tabLogin && tabRegister) {
+      tabLogin.addEventListener('click', showLogin);
+      tabRegister.addEventListener('click', showRegister);
+    }
+    if (linkToRegister) linkToRegister.addEventListener('click', showRegister);
+    if (linkToLogin) linkToLogin.addEventListener('click', showLogin);
+  </script>
+</body>
+</html>
+

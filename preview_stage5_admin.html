@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin & Moderation Interfaces &bull; NagarWatch Preview (Stage 5)</title>
+  
+  <!-- CSS Design Tokens & Base Styles -->
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/components.css">
+  <link rel="stylesheet" href="static/css/responsive.css">
+  <link rel="stylesheet" href="static/css/pages/admin_dashboard.css">
+  <link rel="stylesheet" href="static/css/pages/moderation.css">
+
+  <style>
+    /* Stage Preview Navigation Toolbar */
+    .preview-stage-bar {
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 0.75rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 99999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .preview-stage-bar .title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .preview-stage-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .preview-tab-btn {
+      background: rgba(255,255,255,0.12);
+      color: #E2E8F0;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preview-tab-btn:hover {
+      background: rgba(255,255,255,0.25);
+      color: #FFFFFF;
+    }
+    .preview-tab-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #FFFFFF;
+    }
+    .preview-view-section {
+      display: none;
+      padding-top: 1.5rem;
+      padding-bottom: 3rem;
+    }
+    .preview-view-section.active {
+      display: block;
+    }
+    .preview-disclaimer {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Preview Switcher Bar -->
+  <aside class="preview-stage-bar">
+    <div class="title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5"></path>
+        <path d="M2 12l10 5 10-5"></path>
+      </svg>
+      <span>NagarWatch &bull; Stage 5 Admin &amp; Moderation Preview</span>
+    </div>
+    <div class="preview-stage-tabs">
+      <button type="button" class="preview-tab-btn active" data-target="adminDashboardView">Page 10: Admin Dashboard</button>
+      <button type="button" class="preview-tab-btn" data-target="adminModerationView">Page 11: Moderation Workspace</button>
+    </div>
+  </aside>
+
+  <!-- Global App Header / Navbar -->
+  <header class="app-header">
+    <div class="container flex items-center justify-between">
+      <a href="#" class="brand-logo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <span>NagarWatch</span>
+        <span class="badge badge-primary" style="font-size: 0.7rem; margin-left: 0.5rem;">Admin</span>
+      </a>
+
+      <nav class="nav-links flex items-center gap-3">
+        <a href="#" class="nav-link preview-link-dashboard">Admin Dashboard</a>
+        <a href="#" class="nav-link preview-link-moderation">Moderation Queue</a>
+        <a href="preview_resident_core.html" class="nav-link" title="Switch to Citizen View">Citizen Portal &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: Page 10 - Admin Operations Dashboard
+       ========================================================================= -->
+  <div id="adminDashboardView" class="preview-view-section active">
+    <div class="container">
+
+      <div class="preview-disclaimer">
+        <span><strong>Stage 5 Demonstration:</strong> Showing Page 10 (Admin Dashboard) with civic health KPIs, department breakdown bars, AI intake summary, and moderation data table.</span>
+        <span class="badge badge-info" style="font-size: 0.75rem;">Pure Frontend Demo</span>
+      </div>
+
+      <!-- Admin Console Header -->
+      <header class="admin-header">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="admin-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="M2 17l10 5 10-5"></path>
+                  <path d="M2 12l10 5 10-5"></path>
+                </svg>
+                Municipal Operations Center
+              </span>
+              <span class="text-muted" style="font-size: 0.85rem;">Ward Administration Hub</span>
+            </div>
+            <h1 style="font-size: 1.75rem; margin-bottom: 0.25rem;">City-wide Civic Health Dashboard</h1>
+            <p class="text-muted" style="margin-bottom: 0;">Real-time oversight of citizen reports, departmental work orders, and automated triage.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" class="btn btn-primary preview-link-moderation">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>Open Moderation Queue</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="alert('Demo: Report summary export CSV downloaded.')" title="Export CSV Report">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Civic Health KPIs -->
+      <section aria-label="Key Performance Indicators">
+        <div class="kpi-grid">
+          <!-- KPI 1 -->
+          <div class="kpi-card total">
+            <div class="kpi-label">Total Reports</div>
+            <div class="kpi-value">248</div>
+            <div class="kpi-trend positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              <span>+12% this month</span>
+            </div>
+          </div>
+
+          <!-- KPI 2 -->
+          <div class="kpi-card pending">
+            <div class="kpi-label">Pending Review</div>
+            <div class="kpi-value">42</div>
+            <div class="kpi-trend warning">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>14 awaiting &gt; 24h</span>
+            </div>
+          </div>
+
+          <!-- KPI 3 -->
+          <div class="kpi-card in-progress">
+            <div class="kpi-label">In Field Progress</div>
+            <div class="kpi-value">31</div>
+            <div class="kpi-trend">
+              <span class="text-muted">Active crew dispatches</span>
+            </div>
+          </div>
+
+          <!-- KPI 4 -->
+          <div class="kpi-card resolved">
+            <div class="kpi-label">Resolved Issues</div>
+            <div class="kpi-value">175</div>
+            <div class="kpi-trend positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>70.5% resolution rate</span>
+            </div>
+          </div>
+
+          <!-- KPI 5 -->
+          <div class="kpi-card critical">
+            <div class="kpi-label">Critical Alerts</div>
+            <div class="kpi-value">18</div>
+            <div class="kpi-trend negative">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Requires SLA escalation</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics Split Grid -->
+      <section class="analytics-grid">
+        <!-- Category & Department Breakdown -->
+        <div class="analytics-card">
+          <div class="analytics-title">
+            <span>Department Workload &amp; Distribution</span>
+            <span class="text-muted" style="font-size: 0.85rem; font-weight: normal;">Past 30 Days</span>
+          </div>
+
+          <!-- Roads -->
+          <div class="category-stat-row">
+            <div class="category-stat-header">
+              <span class="category-stat-name">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Public Works (Roads &amp; Footpaths)
+              </span>
+              <span><strong>96</strong> reports (38.7%)</span>
+            </div>
+            <div class="category-progress-track">
+              <div class="category-progress-fill fill-roads" style="width: 38.7%;"></div>
+            </div>
+          </div>
+
+          <!-- Streetlights -->
+          <div class="category-stat-row">
+            <div class="category-stat-header">
+              <span class="category-stat-name">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg>
+                Electricity &amp; Streetlighting
+              </span>
+              <span><strong>64</strong> reports (25.8%)</span>
+            </div>
+            <div class="category-progress-track">
+              <div class="category-progress-fill fill-lights" style="width: 25.8%;"></div>
+            </div>
+          </div>
+
+          <!-- Water -->
+          <div class="category-stat-row">
+            <div class="category-stat-header">
+              <span class="category-stat-name">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                Water Supply &amp; Drainage
+              </span>
+              <span><strong>52</strong> reports (21.0%)</span>
+            </div>
+            <div class="category-progress-track">
+              <div class="category-progress-fill fill-water" style="width: 21.0%;"></div>
+            </div>
+          </div>
+
+          <!-- Waste -->
+          <div class="category-stat-row">
+            <div class="category-stat-header">
+              <span class="category-stat-name">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Sanitation &amp; Solid Waste
+              </span>
+              <span><strong>36</strong> reports (14.5%)</span>
+            </div>
+            <div class="category-progress-track">
+              <div class="category-progress-fill fill-waste" style="width: 14.5%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Intake & Triage Overview -->
+        <div class="analytics-card">
+          <div class="analytics-title">
+            <div class="flex items-center gap-2">
+              <span>AI Intake &amp; Triage</span>
+              <span class="badge badge-info" style="font-size: 0.7rem;">Automated</span>
+            </div>
+          </div>
+          <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.75rem;">
+            Simulated multi-modal model automatically categorizes citizen photo submissions and deduplicates nearby incidents.
+          </p>
+
+          <div class="ai-summary-box">
+            <div class="ai-stat-row">
+              <span>Category Classification</span>
+              <strong style="color: var(--color-primary);">96.4% Accuracy</strong>
+            </div>
+            <div class="ai-stat-row">
+              <span>Duplicates Detected</span>
+              <strong style="color: var(--status-pending);">38 Flagged</strong>
+            </div>
+            <div class="ai-stat-row">
+              <span>Avg. Triage Response</span>
+              <strong style="color: var(--status-resolved);">&lt; 1.8 seconds</strong>
+            </div>
+            <div class="ai-stat-row">
+              <span>Spam / Inappropriate Filter</span>
+              <strong>99.1% Filtered</strong>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <button type="button" class="btn btn-outline btn-block preview-link-moderation" style="font-size: 0.85rem;">
+              Inspect AI Triage Queue &rarr;
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Moderation Queue Table -->
+      <section class="table-container" aria-label="Incoming Issues Moderation Table">
+        <div class="table-toolbar">
+          <div class="flex items-center gap-2">
+            <h2 style="font-size: 1.15rem; margin-bottom: 0;">Live Moderation Queue</h2>
+            <span class="badge badge-neutral" style="font-size: 0.75rem;">6 Recent Items</span>
+          </div>
+          <div class="table-filters">
+            <input type="text" class="form-control" placeholder="Search by ID or title..." style="font-size: 0.85rem; padding: 0.4rem 0.75rem; width: 200px;">
+            <select class="form-control" style="font-size: 0.85rem; padding: 0.4rem 0.75rem; width: auto;">
+              <option value="all">All Departments</option>
+              <option value="roads">Roads &amp; Footpaths</option>
+              <option value="lights">Streetlights</option>
+              <option value="water">Water &amp; Drainage</option>
+              <option value="waste">Sanitation</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Issue ID</th>
+              <th>Report Title</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Reported</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-id-badge">#NW-101</span></td>
+              <td>
+                <a href="javascript:void(0)" class="table-report-title preview-link-moderation">Large Dangerous Pothole near MG Road Flyover</a>
+                <span class="text-muted" style="font-size: 0.75rem;">MG Road, North Lane, Ward 4 &bull; Rahul M.</span>
+              </td>
+              <td><span class="badge badge-neutral">Roads</span></td>
+              <td><span class="badge badge-danger">Urgent</span></td>
+              <td><span class="badge badge-warning">Pending Review</span></td>
+              <td>2h ago</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary preview-link-moderation">Moderate</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="table-id-badge">#NW-102</span></td>
+              <td>
+                <a href="javascript:void(0)" class="table-report-title preview-link-moderation">Broken Streetlight causing safety hazard at night</a>
+                <span class="text-muted" style="font-size: 0.75rem;">Sector 4, Main Market Lane &bull; Priya S.</span>
+              </td>
+              <td><span class="badge badge-neutral">Streetlights</span></td>
+              <td><span class="badge badge-info">Medium</span></td>
+              <td><span class="badge badge-primary">Verified</span></td>
+              <td>Yesterday</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-outline preview-link-moderation">Review</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="table-id-badge">#NW-103</span></td>
+              <td>
+                <a href="javascript:void(0)" class="table-report-title preview-link-moderation">Major Drinking Water Pipeline Leakage</a>
+                <span class="text-muted" style="font-size: 0.75rem;">Near City General Hospital &bull; Dr. Ananya V.</span>
+              </td>
+              <td><span class="badge badge-neutral">Water</span></td>
+              <td><span class="badge badge-warning">High</span></td>
+              <td><span class="badge badge-info">In Progress</span></td>
+              <td>3d ago</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-outline preview-link-moderation">Review</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="table-id-badge">#NW-104</span></td>
+              <td>
+                <a href="javascript:void(0)" class="table-report-title preview-link-moderation">Illegal Garbage Accumulation near Community Park</a>
+                <span class="text-muted" style="font-size: 0.75rem;">Green Glen Park Gate #2 &bull; Karthik R.</span>
+              </td>
+              <td><span class="badge badge-neutral">Waste</span></td>
+              <td><span class="badge badge-neutral">Low</span></td>
+              <td><span class="badge badge-success">Resolved</span></td>
+              <td>5d ago</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-outline preview-link-moderation">View Log</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="table-id-badge">#NW-105</span></td>
+              <td>
+                <a href="javascript:void(0)" class="table-report-title preview-link-moderation">Broken Footpath Paver Blocks &amp; Exposed Drain</a>
+                <span class="text-muted" style="font-size: 0.75rem;">14th Cross, Malleshwaram &bull; Sunita M.</span>
+              </td>
+              <td><span class="badge badge-neutral">Roads</span></td>
+              <td><span class="badge badge-warning">High</span></td>
+              <td><span class="badge badge-primary">Verified</span></td>
+              <td>4d ago</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-outline preview-link-moderation">Review</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="table-id-badge">#NW-106</span></td>
+              <td>
+                <a href="javascript:void(0)" class="table-report-title preview-link-moderation">Dead Streetlight on High Traffic Junction</a>
+                <span class="text-muted" style="font-size: 0.75rem;">Ring Road Circle, Ward 8 &bull; Vikram N.</span>
+              </td>
+              <td><span class="badge badge-neutral">Streetlights</span></td>
+              <td><span class="badge badge-danger">Urgent</span></td>
+              <td><span class="badge badge-warning">Pending Review</span></td>
+              <td>Just now</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary preview-link-moderation">Moderate</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 2: Page 11 - Admin Moderation & Triage Workspace
+       ========================================================================= -->
+  <div id="adminModerationView" class="preview-view-section">
+    <div class="container">
+
+      <div class="preview-disclaimer">
+        <span><strong>Stage 5 Demonstration:</strong> Showing Page 11 (Moderation Workspace). Click any issue on the left queue, test AI recommendations, change department/priority, and click <em>Verify, In Progress, or Resolved</em> to see real-time UI state updates and feedback toasts.</span>
+        <span class="badge badge-info" style="font-size: 0.75rem;">Interactive Demo</span>
+      </div>
+
+      <!-- Top Navigation & Moderator Status Header -->
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <a href="javascript:void(0)" class="text-muted preview-link-dashboard" style="font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              Back to Admin Console
+            </a>
+          </div>
+          <h1 style="font-size: 1.75rem; margin-bottom: 0.25rem;">Moderation &amp; Triage Workspace</h1>
+          <p class="text-muted" style="margin-bottom: 0;">Review incoming citizen issues, assess AI suggestions, verify reports, and route to field departments.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="badge badge-neutral" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Moderator: V. Sharma (Ward 4)
+          </span>
+        </div>
+      </div>
+
+      <!-- Workspace 2-Column Grid -->
+      <div class="mod-workspace">
+
+        <!-- Left Sidebar: Moderation Queue -->
+        <aside class="mod-queue-sidebar" aria-label="Incoming Issues Queue">
+          <div class="mod-queue-header">
+            <div class="mod-queue-title">
+              <span>Triage Queue</span>
+              <span class="badge badge-primary" id="queueCountBadge" style="font-size: 0.75rem;">6 in Queue</span>
+            </div>
+            <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 0;">Select any report to inspect details, AI triage flags, and take action.</p>
+          </div>
+
+          <ul class="mod-queue-list" id="moderationQueueList">
+            <!-- Rendered dynamically by moderation.js -->
+            <li class="p-3 text-muted" style="font-size: 0.85rem;">Loading queue items...</li>
+          </ul>
+        </aside>
+
+        <!-- Right Main Panel: Inspection & Action Center -->
+        <main class="mod-detail-panel" aria-label="Selected Issue Details &amp; Action Workspace">
+          
+          <!-- Report Inspection Card -->
+          <section class="mod-card">
+            <div class="mod-card-header">
+              <div>
+                <div class="mod-report-id" id="modReportId">#NW-101</div>
+                <h2 id="modReportTitle" style="font-size: 1.35rem; margin-bottom: 0.35rem;">Large Dangerous Pothole near MG Road Flyover</h2>
+                <div class="text-muted" style="font-size: 0.85rem;">
+                  Reported by <strong id="modReportCitizen">Rahul M. (Verified Resident)</strong> &bull; <span id="modReportTime">2 hours ago</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="badge badge-warning" id="modReportStatusBadge">Pending Review</span>
+                <span class="badge badge-danger" id="modReportPriorityBadge">URGENT PRIORITY</span>
+              </div>
+            </div>
+
+            <!-- Evidence & Geo-location Grid -->
+            <div class="mod-evidence-grid">
+              <!-- Photo Container -->
+              <div class="mod-photo-box">
+                <span class="mod-photo-badge">Attached Evidence (1 Photo)</span>
+                <div class="mod-photo-placeholder">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                  <span style="font-size: 0.8rem;">Citizen Photo Proof</span>
+                </div>
+              </div>
+
+              <!-- Metadata & Location -->
+              <div>
+                <div class="mod-meta-list mb-3">
+                  <div class="mod-meta-item">
+                    <strong>Category</strong>
+                    <span id="modReportCategory">Roads &amp; Footpaths</span>
+                  </div>
+                  <div class="mod-meta-item">
+                    <strong>Location / Landmark</strong>
+                    <span id="modReportLocation">MG Road, North Lane, Ward 4</span>
+                  </div>
+                  <div class="mod-meta-item">
+                    <strong>GPS Coordinates</strong>
+                    <span>12.9716&deg; N, 77.5946&deg; E</span>
+                  </div>
+                  <div class="mod-meta-item">
+                    <strong>Ward Jurisdiction</strong>
+                    <span>Central Ward 4 (Division 2)</span>
+                  </div>
+                </div>
+
+                <div>
+                  <strong style="display: block; font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Citizen Problem Description</strong>
+                  <p id="modReportDesc" style="font-size: 0.9rem; line-height: 1.5; color: var(--color-heading); margin-bottom: 0;">
+                    Deep pothole causing traffic congestion and severe risk to two-wheelers during peak evening hours. Rainwater has accumulated inside it.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Copilot Suggestion Box -->
+            <div class="ai-copilot-card">
+              <div class="ai-copilot-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <span>AI Automated Triage Copilot</span>
+                <span class="ai-pill">Multi-modal AI Model</span>
+              </div>
+
+              <div class="ai-insight-row">
+                <span>Suggested Category</span>
+                <strong id="modAiCategory" style="color: var(--color-primary);">Roads &amp; Footpaths (98% confidence)</strong>
+              </div>
+              <div class="ai-insight-row">
+                <span>Assessed Urgency &amp; Severity</span>
+                <strong id="modAiSeverity" style="color: var(--status-rejected);">High / Urgent (Vehicle hazard)</strong>
+              </div>
+
+              <!-- Duplicate Alert (Shown conditionally) -->
+              <div class="duplicate-alert" id="modDuplicateAlert" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                  <strong style="display: block; margin-bottom: 0.15rem;">Potential Duplicate Incident Detected</strong>
+                  <span id="modDuplicateText">Similar report verified in Sector 4 within 500m radius.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Community Validation Strip -->
+            <div class="validation-bar-container">
+              <div class="validation-header">
+                <span style="color: var(--status-resolved);" id="modReportUpvotes">24 Confirmations</span>
+                <span style="color: var(--status-rejected);" id="modReportDisputes">1 Dispute</span>
+              </div>
+              <div class="validation-track" id="modValidationTrack">
+                <div class="validation-upvotes" style="width: 96%;"></div>
+                <div class="validation-disputes" style="width: 4%;"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Moderation Actions & Decision Controls -->
+          <section class="decision-panel">
+            <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Official Moderation Action</h3>
+
+            <div class="grid grid-2 gap-3 mb-3">
+              <div>
+                <label for="modDeptSelect" class="form-label">Assign Department / Team</label>
+                <select id="modDeptSelect" class="form-control">
+                  <option value="pwd-roads" selected>PWD - Road Maintenance Division</option>
+                  <option value="bescom-lights">BESCOM - Streetlight &amp; Electrical</option>
+                  <option value="bwssb-water">BWSSB - Water Supply &amp; Drainage</option>
+                  <option value="bbmp-waste">BBMP - Solid Waste &amp; Sanitation</option>
+                  <option value="traffic-police">Traffic Enforcement Liason</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="modPrioritySelect" class="form-label">Priority Level Override</label>
+                <select id="modPrioritySelect" class="form-control">
+                  <option value="urgent">Urgent (24h SLA response)</option>
+                  <option value="high">High (48h SLA response)</option>
+                  <option value="medium">Medium (4-5 days)</option>
+                  <option value="low">Low (Standard schedule)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="modInternalNotes" class="form-label">Internal Officer Notes / Dispatch Instructions</label>
+              <textarea id="modInternalNotes" class="form-control" rows="2" placeholder="e.g., Road repair vehicle dispatched with quick-drying asphalt mix..."></textarea>
+            </div>
+
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <button type="button" class="btn btn-outline" id="btnModSaveNotes">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                <span>Save Internal Notes</span>
+              </button>
+            </div>
+
+            <!-- Primary Action Buttons -->
+            <div class="action-btn-group">
+              <button type="button" class="btn btn-primary" id="btnModVerify">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Verify Report</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" id="btnModInProgress" style="border-color: var(--color-accent); color: var(--color-accent);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Dispatch Crew (In Progress)</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" id="btnModResolve" style="border-color: var(--status-resolved); color: var(--status-resolved);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Mark Resolved</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" id="btnModDuplicate" style="border-color: var(--status-pending); color: var(--status-pending);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Mark Duplicate</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" id="btnModReject" style="border-color: var(--status-rejected); color: var(--status-rejected);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <span>Reject / Spam</span>
+              </button>
+            </div>
+          </section>
+
+        </main>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Interactive Toast Notification Container -->
+  <div id="moderationToast" class="mod-toast"></div>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="container text-center text-muted" style="font-size: 0.85rem;">
+      <p style="margin-bottom: 0.25rem;">NagarWatch &bull; Municipal Civic Grievance &amp; Issue Resolution Platform &bull; Admin Console</p>
+      <p style="margin-bottom: 0;">Designed with semantic HTML5, pure CSS3 design tokens, and accessible interactions.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="static/js/mock_data.js"></script>
+  <script src="static/js/moderation.js"></script>
+
+  <!-- Preview Tab Switching Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabButtons = document.querySelectorAll(".preview-tab-btn");
+      const sections = document.querySelectorAll(".preview-view-section");
+
+      function activateTab(targetId) {
+        tabButtons.forEach(btn => {
+          if (btn.getAttribute("data-target") === targetId) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+
+        sections.forEach(sec => {
+          if (sec.id === targetId) {
+            sec.classList.add("active");
+          } else {
+            sec.classList.remove("active");
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
+          activateTab(target);
+        });
+      });
+
+      // Header quick links
+      document.querySelectorAll(".preview-link-dashboard").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          activateTab("adminDashboardView");
+        });
+      });
+
+      document.querySelectorAll(".preview-link-moderation").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          activateTab("adminModerationView");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+

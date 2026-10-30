@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NagarWatch &bull; Stage 4 Map &amp; Personal Pages Preview</title>
+
+  <!-- Global & Page Stylesheets -->
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/components.css">
+  <link rel="stylesheet" href="static/css/responsive.css">
+  <link rel="stylesheet" href="static/css/pages/map_view.css">
+  <link rel="stylesheet" href="static/css/pages/my_reports.css">
+  <link rel="stylesheet" href="static/css/pages/notifications.css">
+
+  <!-- Leaflet Map CSS from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <style>
+    /* Tab bar switcher for preview */
+    .preview-tab-bar {
+      display: inline-flex;
+      background-color: var(--color-surface);
+      padding: 4px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-sm);
+      margin: var(--space-4) auto var(--space-6);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .preview-tab-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+    .preview-tab-btn.active {
+      background-color: var(--color-primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(29, 78, 216, 0.25);
+    }
+    .stage4-view-panel {
+      display: none;
+      animation: fadeIn 0.3s ease-out both;
+    }
+    .stage4-view-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Demo Disclaimer Banner -->
+  <div class="demo-disclaimer-banner" role="status">
+    <strong>Stage 4 Preview</strong>
+    <span>Map View, My Reports, and Notifications &bull; Standalone Browser Preview</span>
+  </div>
+
+  <!-- Shared Top Navigation Bar -->
+  <header class="site-header" id="top">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <!-- Brand -->
+        <a href="preview_stage1.html" class="navbar-brand">
+          <span class="brand-icon">N</span>
+          <span>NagarWatch</span>
+          <span class="brand-badge">PS 1.1</span>
+        </a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="navbarCollapse" aria-label="Toggle navigation">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Links and Actions -->
+        <div class="navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav">
+            <li><a href="preview_resident_core.html" class="nav-link">&larr; Stage 3 Resident Core</a></li>
+            <li><a href="preview_auth.html" class="nav-link">Sign In / Register</a></li>
+          </ul>
+
+          <div class="navbar-actions">
+            <div class="view-mode-toggle" title="Switch demonstration view">
+              <button type="button" class="view-mode-btn active">Resident</button>
+              <button type="button" class="view-mode-btn">Admin</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area with 3 Tab Panels -->
+  <main class="main-content">
+    <div class="container text-center">
+      <!-- 3-Screen Switcher -->
+      <div class="preview-tab-bar" role="tablist">
+        <button type="button" class="preview-tab-btn active" id="tab0" onclick="switchStage4Tab(0)">1. Interactive Map View</button>
+        <button type="button" class="preview-tab-btn" id="tab1" onclick="switchStage4Tab(1)">2. My Submissions Tracker</button>
+        <button type="button" class="preview-tab-btn" id="tab2" onclick="switchStage4Tab(2)">3. Notifications Feed</button>
+      </div>
+    </div>
+
+    <!-- PANEL 0: MAP VIEW -->
+    <div class="stage4-view-panel active" id="panel0">
+      <div class="container">
+        <div class="map-page-header text-left">
+          <h1 class="mb-1">Interactive Civic Map</h1>
+          <p class="text-muted" style="margin-bottom: 0;">Explore geographic distribution of civic issues reported across city neighborhoods.</p>
+        </div>
+
+        <section class="map-controls-card">
+          <div class="map-filter-group">
+            <div>
+              <select id="mapCategoryFilter" class="form-control" aria-label="Filter pins by category">
+                <option value="">All Categories</option>
+                <option value="Roads & Footpaths">Roads &amp; Footpaths</option>
+                <option value="Streetlights">Streetlights</option>
+                <option value="Water & Drainage">Water &amp; Drainage</option>
+                <option value="Garbage & Waste">Garbage &amp; Waste</option>
+              </select>
+            </div>
+            <div>
+              <select id="mapStatusFilter" class="form-control" aria-label="Filter pins by status">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending Review</option>
+                <option value="verified">Verified</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <span class="status-badge status-verified" id="mapMarkerCount">Loading Pins...</span>
+          </div>
+        </section>
+
+        <section class="map-canvas-container">
+          <div id="leafletMap"></div>
+        </section>
+
+        <div class="map-fallback-banner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <span><strong>Map Notes:</strong> Leaflet &amp; OpenStreetMap render pins with coordinates. Click any pin to view report details in the popup.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 1: MY REPORTS -->
+    <div class="stage4-view-panel" id="panel1">
+      <div class="container text-left">
+        <div class="my-reports-header">
+          <div>
+            <h1 class="mb-1">My Civic Submissions</h1>
+            <p class="text-muted" style="margin-bottom: 0;">Track the municipal progress and field resolution of issues you have submitted.</p>
+          </div>
+        </div>
+
+        <div class="my-reports-tabs" role="tablist">
+          <button type="button" class="my-reports-tab-btn active" data-filter="all">
+            <span>All Submissions</span>
+            <span class="tab-badge">3</span>
+          </button>
+          <button type="button" class="my-reports-tab-btn" data-filter="pending">
+            <span>Under Review</span>
+            <span class="tab-badge">1</span>
+          </button>
+          <button type="button" class="my-reports-tab-btn" data-filter="in-progress">
+            <span>In Progress</span>
+            <span class="tab-badge">1</span>
+          </button>
+          <button type="button" class="my-reports-tab-btn" data-filter="resolved">
+            <span>Resolved</span>
+            <span class="tab-badge">1</span>
+          </button>
+        </div>
+
+        <div id="submissionsContainer">
+          <!-- Card 1 -->
+          <article class="submission-card" data-status="pending">
+            <div class="submission-header-row">
+              <div>
+                <span class="report-card-category-tag" style="position: static; display: inline-block; padding: 2px 8px; margin-bottom: 6px;">
+                  Roads &amp; Footpaths
+                </span>
+                <h3 class="submission-title">Large Dangerous Pothole near MG Road Flyover</h3>
+                <div class="submission-meta">
+                  <span>Location: MG Road, North Lane, Ward 4</span>
+                  <span>Submitted: Today, 10:15 AM</span>
+                  <span>Tracking ID: #NW-101</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="status-badge status-pending">Pending Review</span>
+                <span class="priority-badge priority-urgent">Urgent</span>
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-labels">
+                <span>Stage 1: Field Verification</span>
+                <span>25% Complete</span>
+              </div>
+              <div class="progress-track" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill progress-pending"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-3 mt-3" style="border-top: 1px solid var(--color-border);">
+              <span class="text-muted" style="font-size: 0.8125rem;">Assigned to: Junior Engineer R. Sharma</span>
+              <span class="btn btn-sm btn-outline" style="cursor: pointer;">Track Details &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="submission-card" data-status="in-progress">
+            <div class="submission-header-row">
+              <div>
+                <span class="report-card-category-tag" style="position: static; display: inline-block; padding: 2px 8px; margin-bottom: 6px;">
+                  Streetlights
+                </span>
+                <h3 class="submission-title">Broken Streetlight causing safety hazard at night</h3>
+                <div class="submission-meta">
+                  <span>Location: Sector 4, Main Market Lane</span>
+                  <span>Submitted: Yesterday</span>
+                  <span>Tracking ID: #NW-102</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="status-badge status-in-progress">In Progress</span>
+                <span class="priority-badge priority-medium">Medium</span>
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-labels">
+                <span>Stage 3: Electrical Technician Dispatched</span>
+                <span>75% Complete</span>
+              </div>
+              <div class="progress-track" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill progress-in-progress"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-3 mt-3" style="border-top: 1px solid var(--color-border);">
+              <span class="text-muted" style="font-size: 0.8125rem;">Expected Completion: Today evening</span>
+              <span class="btn btn-sm btn-outline" style="cursor: pointer;">Track Details &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="submission-card" data-status="resolved">
+            <div class="submission-header-row">
+              <div>
+                <span class="report-card-category-tag" style="position: static; display: inline-block; padding: 2px 8px; margin-bottom: 6px;">
+                  Garbage &amp; Waste
+                </span>
+                <h3 class="submission-title">Illegal Garbage Accumulation near Community Park</h3>
+                <div class="submission-meta">
+                  <span>Location: Green Glen Park Gate #2, Ward 12</span>
+                  <span>Submitted: 5 days ago</span>
+                  <span>Tracking ID: #NW-104</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="status-badge status-resolved">Resolved</span>
+                <span class="priority-badge priority-low">Low</span>
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-labels">
+                <span>Stage 4: Cleaned &amp; Closed</span>
+                <span>100% Complete</span>
+              </div>
+              <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill progress-resolved"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-3 mt-3" style="border-top: 1px solid var(--color-border);">
+              <span class="text-muted" style="font-size: 0.8125rem;">Resolved on: Oct 29, 2026 by Sanitation Dept</span>
+              <span class="btn btn-sm btn-outline" style="cursor: pointer;">View Resolution &rarr;</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: NOTIFICATIONS -->
+    <div class="stage4-view-panel" id="panel2">
+      <div class="container text-left">
+        <div class="mb-6">
+          <h1 class="mb-1">Notifications &amp; Civic Alerts</h1>
+          <p class="text-muted" style="margin-bottom: 0;">Stay informed about progress updates, field assignments, and neighborhood advisories.</p>
+        </div>
+
+        <section class="notifications-toolbar">
+          <div class="notifications-filter-tabs" role="tablist">
+            <button type="button" class="notif-tab-btn active" id="notifTabAll">
+              <span>All Notifications</span>
+            </button>
+            <button type="button" class="notif-tab-btn" id="notifTabUnread">
+              <span>Unread</span>
+              <span class="unread-badge-pill" id="unreadCountBadge">3</span>
+            </button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline btn-sm" id="btnMarkAllRead">
+              Mark All as Read
+            </button>
+          </div>
+        </section>
+
+        <section id="notificationsList"></section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Shared Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 <strong>NagarWatch Team</strong>. Built for Hackathon PS 1.1.</div>
+        <div class="text-muted">Stage 4: Map View, My Reports, and Notifications &bull; Demonstration Data Only.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="static/js/base.js"></script>
+  <script src="static/js/mock_data.js"></script>
+  <script src="static/js/map_view.js"></script>
+  <script src="static/js/notifications.js"></script>
+  <script>
+    function switchStage4Tab(index) {
+      for (let i = 0; i < 3; i++) {
+        const tab = document.getElementById(`tab${i}`);
+        const panel = document.getElementById(`panel${i}`);
+        if (tab && panel) {
+          if (i === index) {
+            tab.classList.add('active');
+            panel.classList.add('active');
+          } else {
+            tab.classList.remove('active');
+            panel.classList.remove('active');
+          }
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Filter tabs for personal submissions (My Reports)
+    const myReportsTabs = document.querySelectorAll('.my-reports-tab-btn');
+    const submissionCards = document.querySelectorAll('.submission-card');
+
+    myReportsTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        myReportsTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.getAttribute('data-filter');
+        submissionCards.forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-status') === filter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+

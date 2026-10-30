@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NagarWatch &bull; Stage 3 Resident Pages Preview</title>
+
+  <!-- Global & Page Stylesheets -->
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/components.css">
+  <link rel="stylesheet" href="static/css/responsive.css">
+  <link rel="stylesheet" href="static/css/pages/dashboard.css">
+  <link rel="stylesheet" href="static/css/pages/report_issue.css">
+  <link rel="stylesheet" href="static/css/pages/explore_issues.css">
+  <link rel="stylesheet" href="static/css/pages/issue_detail.css">
+
+  <style>
+    /* Tab bar switcher for preview */
+    .preview-tab-bar {
+      display: inline-flex;
+      background-color: var(--color-surface);
+      padding: 4px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-sm);
+      margin: var(--space-4) auto var(--space-6);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .preview-tab-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+    .preview-tab-btn.active {
+      background-color: var(--color-primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(29, 78, 216, 0.25);
+    }
+    .resident-view-panel {
+      display: none;
+      animation: fadeIn 0.3s ease-out both;
+    }
+    .resident-view-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Demo Disclaimer Banner -->
+  <div class="demo-disclaimer-banner" role="status">
+    <strong>Stage 3 Preview</strong>
+    <span>Resident Core Pages (Dashboard, Report Issue, Explore, Issue Detail) &bull; Standalone Browser Preview</span>
+  </div>
+
+  <!-- Shared Top Navigation Bar -->
+  <header class="site-header" id="top">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <!-- Brand -->
+        <a href="preview_stage1.html" class="navbar-brand">
+          <span class="brand-icon">N</span>
+          <span>NagarWatch</span>
+          <span class="brand-badge">PS 1.1</span>
+        </a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="navbarCollapse" aria-label="Toggle navigation">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Links and Actions -->
+        <div class="navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav">
+            <li><a href="javascript:void(0)" onclick="switchTab(0)" class="nav-link active" id="navDash">Dashboard</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab(2)" class="nav-link" id="navExplore">Explore</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab(1)" class="nav-link" id="navReport">Report Issue</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab(3)" class="nav-link" id="navDetail">Issue Detail</a></li>
+            <li><a href="preview_auth.html" class="nav-link">Sign In / Register</a></li>
+          </ul>
+
+          <div class="navbar-actions">
+            <!-- View Mode Switcher -->
+            <div class="view-mode-toggle" title="Switch demonstration view">
+              <button type="button" class="view-mode-btn active">Resident</button>
+              <button type="button" class="view-mode-btn">Admin</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area with 4 Tab Panels -->
+  <main class="main-content">
+    <div class="container text-center">
+      <!-- 4-Screen Switcher -->
+      <div class="preview-tab-bar" role="tablist">
+        <button type="button" class="preview-tab-btn active" id="tab0" onclick="switchTab(0)">1. Resident Dashboard</button>
+        <button type="button" class="preview-tab-btn" id="tab1" onclick="switchTab(1)">2. Report an Issue Form</button>
+        <button type="button" class="preview-tab-btn" id="tab2" onclick="switchTab(2)">3. Explore &amp; Filter Issues</button>
+        <button type="button" class="preview-tab-btn" id="tab3" onclick="switchTab(3)">4. Issue Details &amp; Timeline</button>
+      </div>
+    </div>
+
+    <!-- PANEL 0: DASHBOARD -->
+    <div class="resident-view-panel active" id="panel0">
+      <div class="container">
+        <!-- Welcome Hero Banner -->
+        <section class="dashboard-welcome">
+          <div class="dashboard-welcome-content">
+            <h1>Welcome back, Citizen</h1>
+            <p>Track reported civic issues in your neighborhood, view progress updates from municipal authorities, or submit a new problem in your ward.</p>
+          </div>
+          <div>
+            <button type="button" onclick="switchTab(1)" class="btn btn-lg" style="background-color: #ffffff; color: var(--color-primary); font-weight: 700; box-shadow: var(--shadow-md);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <span>Report an Issue</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Metric Summary Cards -->
+        <section aria-label="City-wide Issue Summary">
+          <div class="metrics-grid">
+            <div class="metric-card metric-total">
+              <span class="metric-label">Total Reports</span>
+              <div class="metric-number">248</div>
+              <span class="metric-desc">Registered across all wards</span>
+            </div>
+            <div class="metric-card metric-pending">
+              <span class="metric-label">Pending Review</span>
+              <div class="metric-number">42</div>
+              <span class="metric-desc">Awaiting municipal verification</span>
+            </div>
+            <div class="metric-card metric-in-progress">
+              <span class="metric-label">In Progress</span>
+              <div class="metric-number">31</div>
+              <span class="metric-desc">Assigned to field engineers</span>
+            </div>
+            <div class="metric-card metric-resolved">
+              <span class="metric-label">Resolved</span>
+              <div class="metric-number">175</div>
+              <span class="metric-desc">Completed &amp; verified</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Portal Shortcuts -->
+        <section class="shortcuts-section" aria-label="Quick Actions">
+          <div class="section-header-bar">
+            <h2>Quick Navigation</h2>
+          </div>
+          <div class="shortcuts-grid">
+            <a href="javascript:void(0)" onclick="switchTab(2)" class="shortcut-card">
+              <div class="shortcut-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+              <div>
+                <div class="shortcut-title">Explore Issues</div>
+                <div class="shortcut-desc">Browse &amp; filter reports</div>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="switchTab(1)" class="shortcut-card">
+              <div class="shortcut-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+              </div>
+              <div>
+                <div class="shortcut-title">Report Issue</div>
+                <div class="shortcut-desc">Submit new problem</div>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="switchTab(3)" class="shortcut-card">
+              <div class="shortcut-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              </div>
+              <div>
+                <div class="shortcut-title">Issue Details</div>
+                <div class="shortcut-desc">Track status &amp; lifecycle</div>
+              </div>
+            </a>
+            <a href="preview_auth.html" class="shortcut-card">
+              <div class="shortcut-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
+              <div>
+                <div class="shortcut-title">Account Portal</div>
+                <div class="shortcut-desc">Sign in or register</div>
+              </div>
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- PANEL 1: REPORT AN ISSUE -->
+    <div class="resident-view-panel" id="panel1">
+      <div class="container">
+        <div class="mb-6 text-left">
+          <h1>Report a Civic Problem</h1>
+          <p class="text-muted">Submit an infrastructure or municipal issue in your neighborhood for administrative review.</p>
+        </div>
+
+        <div class="report-form-layout">
+          <div>
+            <div class="card" style="padding: var(--space-6);">
+              <div id="reportFormFeedback" aria-live="polite"></div>
+
+              <form id="reportIssueForm" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="issueTitle">
+                    Issue Title <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input type="text" id="issueTitle" class="form-control" placeholder="e.g. Large pothole near MG Road flyover" required>
+                  <div class="form-hint">Provide a concise, descriptive title of the problem.</div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="issueCategory">
+                    Issue Category <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <select id="issueCategory" class="form-control" required>
+                    <option value="" disabled selected>-- Select Civic Category --</option>
+                    <option value="Roads & Footpaths">Roads &amp; Footpaths</option>
+                    <option value="Streetlights">Streetlights &amp; Electricity</option>
+                    <option value="Water & Drainage">Water Supply &amp; Drainage</option>
+                    <option value="Garbage & Waste">Garbage &amp; Waste Management</option>
+                    <option value="Parks & Public Spaces">Parks &amp; Public Spaces</option>
+                    <option value="Other">Other Community Infrastructure</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="issueDescription">
+                    Detailed Description <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <textarea id="issueDescription" class="form-control" rows="4" placeholder="Describe the exact location, severity, and duration..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Upload Photo Evidence (Optional)</label>
+                  <div class="upload-dropzone" id="photoDropzone" role="button" tabindex="0" onclick="document.getElementById('issuePhoto').click();">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <div style="font-weight: 600; color: var(--color-heading); margin-bottom: 2px;">Click to select a photo from your computer</div>
+                    <div class="form-hint">Supports PNG, JPG, or JPEG</div>
+                    <input type="file" id="issuePhoto" accept="image/*" style="display: none;">
+                  </div>
+
+                  <div class="upload-preview-container" id="photoPreviewContainer">
+                    <img id="photoPreviewImg" src="" alt="Selected issue preview">
+                    <button type="button" class="btn-remove-photo" id="btnRemovePhoto">Remove Photo</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="issueLocation">
+                    Location / Landmark <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <div class="location-input-wrapper">
+                    <input type="text" id="issueLocation" class="form-control" placeholder="e.g. 14th Cross, Malleshwaram" required>
+                    <button type="button" class="btn btn-secondary" id="btnUseCurrentLocation" style="white-space: nowrap;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                      <span>Use My Location</span>
+                    </button>
+                  </div>
+                  <div class="form-hint" id="geoStatusMsg">Click "Use My Location" to detect coordinates via browser geolocation.</div>
+
+                  <div class="geo-coordinates-row">
+                    <div>
+                      <label class="form-label" for="issueLat" style="font-size: 0.75rem;">Latitude (Optional)</label>
+                      <input type="text" id="issueLat" class="form-control" placeholder="e.g. 12.971598">
+                    </div>
+                    <div>
+                      <label class="form-label" for="issueLng" style="font-size: 0.75rem;">Longitude (Optional)</label>
+                      <input type="text" id="issueLng" class="form-control" placeholder="e.g. 77.594566">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 mt-6">
+                  <button type="submit" class="btn btn-primary btn-lg">Submit Issue Report</button>
+                  <button type="button" onclick="switchTab(0)" class="btn btn-secondary btn-lg">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- AI Panel -->
+          <div>
+            <aside class="ai-panel">
+              <span class="ai-panel-badge">AI Assistant Preview</span>
+              <h3 style="font-size: 1.125rem; margin-bottom: var(--space-2);">Smart Intake Simulation</h3>
+              <p class="text-muted" style="font-size: 0.8125rem; margin-bottom: var(--space-4);">Real-time simulated classifier responding to your inputs.</p>
+              <div class="ai-suggestion-box">
+                <div class="ai-suggestion-label">Suggested Category</div>
+                <div class="ai-suggestion-val" id="aiCategorySuggestion">Type title to estimate...</div>
+              </div>
+              <div class="ai-suggestion-box">
+                <div class="ai-suggestion-label">Estimated Severity</div>
+                <div class="ai-suggestion-val" id="aiSeveritySuggestion">Standard Field Review</div>
+              </div>
+              <div class="alert alert-info" id="aiPhotoAnalysisNotice" style="display: none; font-size: 0.8125rem; padding: var(--space-3);"></div>
+              <div class="mt-4">
+                <button type="button" class="btn btn-outline btn-block btn-sm" onclick="alert('Duplicate Check: No matching reports within 500m of this location.');">
+                  Check Similar Reports
+                </button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: EXPLORE ISSUES -->
+    <div class="resident-view-panel" id="panel2">
+      <div class="container">
+        <div class="mb-6 text-left">
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h1 class="mb-1">Explore Community Reports</h1>
+              <p class="text-muted" style="margin-bottom: 0;">Live demonstration filtering over 6 realistic civic reports.</p>
+            </div>
+            <div>
+              <button type="button" onclick="switchTab(1)" class="btn btn-primary">Report New Issue</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <section class="explore-toolbar">
+          <div class="explore-search-row">
+            <div class="search-input-wrap">
+              <svg class="search-icon-inside" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="search" id="searchKeyword" class="form-control" placeholder="Search by title, location, or keyword (try 'pothole', 'street', 'hospital')...">
+            </div>
+          </div>
+
+          <div class="explore-filters-row">
+            <div class="filter-item">
+              <select id="filterCategory" class="form-control">
+                <option value="">All Categories</option>
+                <option value="Roads & Footpaths">Roads &amp; Footpaths</option>
+                <option value="Streetlights">Streetlights</option>
+                <option value="Water & Drainage">Water &amp; Drainage</option>
+                <option value="Garbage & Waste">Garbage &amp; Waste</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <select id="filterStatus" class="form-control">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending Review</option>
+                <option value="verified">Verified</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <select id="filterPriority" class="form-control">
+                <option value="">All Priorities</option>
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <select id="sortOrder" class="form-control">
+                <option value="newest">Sort: Newest First</option>
+                <option value="priority">Sort: Highest Priority</option>
+              </select>
+            </div>
+            <div>
+              <button type="button" class="btn btn-outline btn-sm" id="btnClearFilters">Reset Filters</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Counter -->
+        <div class="explore-results-meta">
+          <div id="resultsCounter" style="font-weight: 600;">Loading reports...</div>
+        </div>
+
+        <!-- Dynamic Grid -->
+        <section class="explore-grid" id="exploreGrid"></section>
+      </div>
+    </div>
+
+    <!-- PANEL 3: ISSUE DETAILS -->
+    <div class="resident-view-panel" id="panel3">
+      <div class="container text-left">
+        <div class="mb-4">
+          <a href="javascript:void(0)" onclick="switchTab(2)" class="text-muted" style="font-size: 0.875rem;">&larr; Back to Explore Issues</a>
+        </div>
+
+        <div class="issue-detail-layout">
+          <div>
+            <article class="issue-detail-card">
+              <div class="issue-detail-header">
+                <div class="issue-detail-badges">
+                  <span class="report-card-category-tag" style="position: static; background: var(--color-primary-subtle); color: var(--color-primary); border: 1px solid var(--color-primary-border); padding: 4px 10px;">
+                    Roads &amp; Footpaths
+                  </span>
+                  <span class="status-badge status-pending">Pending Review</span>
+                  <span class="priority-badge priority-urgent">Urgent</span>
+                </div>
+                <h1 class="issue-detail-title">Large Dangerous Pothole near MG Road Flyover</h1>
+                <div class="issue-detail-meta">
+                  <div><span>MG Road, North Lane, Ward 4</span></div>
+                  <div><span>Reported 2 hours ago by Rahul M.</span></div>
+                  <div><span>ID: #NW-101</span></div>
+                </div>
+              </div>
+
+              <div class="issue-photo-box">
+                <div class="text-center p-6 text-muted">
+                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto var(--space-2); color: var(--color-text-light);"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                  <div style="font-weight: 600;">Uploaded Photo Evidence</div>
+                  <div style="font-size: 0.8125rem;">Camera Capture &bull; MG Road North Corner</div>
+                </div>
+              </div>
+
+              <div class="issue-description-box">
+                <h3>Issue Description</h3>
+                <p>Deep pothole approximately 2.5 feet wide and 6 inches deep causing major traffic bottleneck and severe safety risk to two-wheelers, especially after dusk. Immediate asphalt repair requested before rains worsen the crater.</p>
+              </div>
+
+              <div class="community-vote-bar">
+                <div>
+                  <div style="font-weight: 700; font-size: 0.9375rem; color: var(--color-heading);">Community Verification</div>
+                  <div class="text-muted" style="font-size: 0.8125rem;">Validate this problem to help prioritize field workers.</div>
+                </div>
+                <div class="vote-btn-group">
+                  <button type="button" class="btn btn-outline btn-sm" id="btnConfirmIssue">
+                    <span>Confirm Problem (<span id="confirmCount">24</span>)</span>
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnDisputeIssue">
+                    <span>Dispute (<span id="disputeCount">1</span>)</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div>
+            <aside class="timeline-card">
+              <h3 style="font-size: 1.125rem; margin-bottom: var(--space-2);">Status Lifecycle</h3>
+              <p class="text-muted" style="font-size: 0.8125rem; margin-bottom: var(--space-4);">Municipal verification stages.</p>
+              <ul class="timeline-list">
+                <li class="timeline-step is-done">
+                  <div class="timeline-marker">&#10003;</div>
+                  <div class="timeline-step-title">Report Submitted</div>
+                  <div class="timeline-step-date">Today at 10:15 AM &bull; By Citizen</div>
+                </li>
+                <li class="timeline-step is-current">
+                  <div class="timeline-marker">&bull;</div>
+                  <div class="timeline-step-title">Under Ward Verification</div>
+                  <div class="timeline-step-date">Assigned to Road Dept Inspector</div>
+                </li>
+                <li class="timeline-step">
+                  <div class="timeline-marker">&bull;</div>
+                  <div class="timeline-step-title">Work Order In Progress</div>
+                  <div class="timeline-step-date">Asphalt repair scheduled</div>
+                </li>
+                <li class="timeline-step">
+                  <div class="timeline-marker">&bull;</div>
+                  <div class="timeline-step-title">Resolved &amp; Inspected</div>
+                  <div class="timeline-step-date">Pending completion</div>
+                </li>
+              </ul>
+            </aside>
+
+            <div class="card" style="padding: var(--space-5);">
+              <h4 style="font-size: 1rem; margin-bottom: var(--space-2);">Location Information</h4>
+              <div style="font-size: 0.875rem; margin-bottom: var(--space-3);">
+                <div><strong>Coordinates:</strong> 12.971598, 77.594566</div>
+                <div class="text-muted">Ward 4, North Zone</div>
+              </div>
+              <button type="button" class="btn btn-outline btn-block btn-sm" onclick="alert('In Stage 4, this links directly to the Leaflet interactive Map View with this pin focused.');">
+                View on Map
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Shared Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 <strong>NagarWatch Team</strong>. Built for Hackathon PS 1.1.</div>
+        <div class="text-muted">Stage 3: Resident Core Templates &bull; Demonstration Data Only.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="static/js/base.js"></script>
+  <script src="static/js/mock_data.js"></script>
+  <script src="static/js/report_issue.js"></script>
+  <script src="static/js/explore_issues.js"></script>
+  <script>
+    // Tab switcher between the 4 resident pages
+    function switchTab(index) {
+      for (let i = 0; i < 4; i++) {
+        const tab = document.getElementById(`tab${i}`);
+        const panel = document.getElementById(`panel${i}`);
+        if (tab && panel) {
+          if (i === index) {
+            tab.classList.add('active');
+            panel.classList.add('active');
+          } else {
+            tab.classList.remove('active');
+            panel.classList.remove('active');
+          }
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Confirm & Dispute demonstration buttons
+    const btnConfirm = document.getElementById("btnConfirmIssue");
+    const countConfirm = document.getElementById("confirmCount");
+    const btnDispute = document.getElementById("btnDisputeIssue");
+    const countDispute = document.getElementById("disputeCount");
+    let confirmed = false;
+    let disputed = false;
+
+    if (btnConfirm && countConfirm) {
+      btnConfirm.addEventListener("click", () => {
+        if (!confirmed) {
+          countConfirm.textContent = parseInt(countConfirm.textContent) + 1;
+          btnConfirm.classList.remove("btn-outline");
+          btnConfirm.classList.add("btn-primary");
+          confirmed = true;
+        } else {
+          countConfirm.textContent = parseInt(countConfirm.textContent) - 1;
+          btnConfirm.classList.add("btn-outline");
+          btnConfirm.classList.remove("btn-primary");
+          confirmed = false;
+        }
+      });
+    }
+
+    if (btnDispute && countDispute) {
+      btnDispute.addEventListener("click", () => {
+        if (!disputed) {
+          countDispute.textContent = parseInt(countDispute.textContent) + 1;
+          btnDispute.style.backgroundColor = "var(--status-rejected)";
+          btnDispute.style.color = "#ffffff";
+          disputed = true;
+        } else {
+          countDispute.textContent = parseInt(countDispute.textContent) - 1;
+          btnDispute.style.backgroundColor = "";
+          btnDispute.style.color = "";
+          disputed = false;
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+
