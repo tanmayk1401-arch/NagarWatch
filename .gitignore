@@ -222,3 +222,5 @@ __marimo__/
 .idea/
 node_modules/
 *.tmp
+backend/media/
+backend/staticfiles/

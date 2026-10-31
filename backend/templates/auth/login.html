@@ -36,7 +36,8 @@
     </div>
 
     <!-- Login Form -->
-    <form id="loginForm" novalidate>
+    <form id="loginForm" method="POST" action="{% url 'login' %}" novalidate>
+      {% csrf_token %}
       <!-- Email or Username Field -->
       <div class="form-group">
         <label class="form-label" for="loginIdentifier">

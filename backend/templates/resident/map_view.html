@@ -75,7 +75,7 @@
 
   <!-- Leaflet Map Canvas -->
   <section class="map-canvas-container" aria-label="Geographic Issue Map">
-    <div id="leafletMap" role="region" aria-label="City Map showing issue locations"></div>
+    <div id="leafletMap" role="region" aria-label="City Map showing issue locations" data-carto-key="{{ carto_api_key|default:'YOUR_CARTO_API_KEY' }}"></div>
   </section>
 
   <!-- Information Notice -->

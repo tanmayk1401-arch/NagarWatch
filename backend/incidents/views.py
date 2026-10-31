@@ -1,5 +1,6 @@
 
 import json
+from django.conf import settings
 from django.http import JsonResponse
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
@@ -84,7 +85,8 @@ def login_view(request):
     if request.method == "POST":
 
         identifier = (
-            request.POST.get("email_or_username")
+            request.POST.get("identifier")
+            or request.POST.get("email_or_username")
             or request.POST.get("username")
             or request.POST.get("email")
             or ""
@@ -107,6 +109,10 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            next_url = request.GET.get("next") or request.POST.get("next")
+            if next_url and next_url.startswith("/"):
+                return redirect(next_url)
 
             return redirect(
                 "admin_dashboard" if is_admin(user)
@@ -455,6 +461,7 @@ def map_view(request):
         "incidents": issues,
         "issues": issues,
         "incident_count": issues.count(),
+        "carto_api_key": getattr(settings, "CARTO_API_KEY", "YOUR_CARTO_API_KEY"),
     }
 
     return render(request, "resident/map_view.html", context)

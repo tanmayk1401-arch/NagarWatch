@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loginForm.addEventListener("submit", (event) => {
-      event.preventDefault();
       let isValid = true;
 
       // Validate Identifier
@@ -98,7 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
         clearFieldError(passwordInput, passwordError);
       }
 
-      if (isValid && alertContainer) {
+      if (!isValid) {
+        event.preventDefault();
+        return;
+      }
+
+      if (!loginForm.getAttribute("action") && alertContainer) {
+        event.preventDefault();
         alertContainer.innerHTML = `
           <div class="alert alert-success" role="alert">
             <div class="alert-icon">
@@ -149,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     registerForm.addEventListener("submit", (event) => {
-      event.preventDefault();
       let isValid = true;
 
       // Full Name
@@ -201,7 +205,13 @@ document.addEventListener("DOMContentLoaded", () => {
         clearFieldError(termsCheck, termsError);
       }
 
-      if (isValid && alertContainer) {
+      if (!isValid) {
+        event.preventDefault();
+        return;
+      }
+
+      if (!registerForm.getAttribute("action") && alertContainer) {
+        event.preventDefault();
         alertContainer.innerHTML = `
           <div class="alert alert-success" role="alert">
             <div class="alert-icon">

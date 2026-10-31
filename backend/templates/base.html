@@ -16,17 +16,20 @@
   {% block extra_css %}{% endblock %}
 </head>
 <body>
-  <!-- Top Demonstration Disclaimer Banner (Frontend-Only Requirement) -->
-  <div class="demo-disclaimer-banner" role="status">
-    <strong>Demo UI</strong>
-    <span>NagarWatch Civic Tech Frontend (PS 1.1) &bull; Demonstration data only; no backend database connected.</span>
-  </div>
-
   <!-- Shared Top Navigation Bar -->
   {% include 'components/navbar.html' %}
 
   <!-- Main Content Area -->
   <main class="main-content" id="main-content">
+    {% if messages %}
+      <div class="container" style="padding-top: var(--space-4);">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags|default:'info' }}" role="alert" style="margin-bottom: var(--space-3);">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
     {% block content %}
     <!-- Page specific content will be injected here by child templates -->
     {% endblock %}

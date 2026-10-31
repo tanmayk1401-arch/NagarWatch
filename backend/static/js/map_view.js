@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </svg>
         <h3 style="color: var(--color-heading); margin-bottom: var(--space-2);">Offline Map Mode (Leaflet CDN Unavailable)</h3>
         <p style="max-width: 480px; margin: 0 auto var(--space-4); font-size: 0.9375rem;">
-          The map canvas requires an active internet connection to load OpenStreetMap tiles. All 6 mock coordinate reports are loaded in memory and ready to display when connected.
+          The map canvas requires an active internet connection to load CARTO map tiles. All 6 mock coordinate reports are loaded in memory and ready to display when connected.
         </p>
       </div>
     `;
@@ -38,10 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
       scrollWheelZoom: false
     });
 
-    // 2. Add OpenStreetMap Tile Layer
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
-      maxZoom: 19
+    // 2. Add CARTO Positron Tile Layer
+    const cartoKey = (mapElement.getAttribute("data-carto-key") || "").trim() || "YOUR_CARTO_API_KEY";
+    const tileUrl = `https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=${encodeURIComponent(cartoKey)}`;
+    L.tileLayer(tileUrl, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>',
+      maxZoom: 19,
+      subdomains: "abcd"
     }).addTo(map);
 
     // 3. Markers Layer Group

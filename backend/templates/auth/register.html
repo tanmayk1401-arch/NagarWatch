@@ -36,7 +36,8 @@
     </div>
 
     <!-- Registration Form -->
-    <form id="registerForm" novalidate>
+    <form id="registerForm" method="POST" action="{% url 'register' %}" novalidate>
+      {% csrf_token %}
       <!-- Full Name Field -->
       <div class="form-group">
         <label class="form-label" for="regFullName">
