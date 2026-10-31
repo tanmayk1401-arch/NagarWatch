@@ -182,25 +182,25 @@
         </div>
       </div>
       <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.75rem;">
-        Simulated multi-modal model automatically categorizes citizen photo submissions and deduplicates nearby incidents.
+        Multi-signal AI models classify citizen reports, evaluate priority scores, and detect duplicate reports for human review.
       </p>
 
       <div class="ai-summary-box">
         <div class="ai-stat-row">
-          <span>Category Classification</span>
-          <strong style="color: var(--color-primary);">96.4% Accuracy</strong>
+          <span>Classifier Engine</span>
+          <strong style="color: var(--color-primary);">Multilingual / Triage</strong>
         </div>
         <div class="ai-stat-row">
-          <span>Duplicates Detected</span>
-          <strong style="color: var(--status-pending);">38 Flagged</strong>
+          <span>Priority Scoring</span>
+          <strong style="color: var(--color-primary);">4-Component S+V+R+A</strong>
         </div>
         <div class="ai-stat-row">
-          <span>Avg. Triage Response</span>
-          <strong style="color: var(--status-resolved);">&lt; 1.8 seconds</strong>
+          <span>Duplicate Detection</span>
+          <strong style="color: var(--status-pending);">Advisory (Human Review)</strong>
         </div>
         <div class="ai-stat-row">
-          <span>Spam / Inappropriate Filter</span>
-          <strong>99.1% Filtered</strong>
+          <span>Photo Intelligence</span>
+          <strong style="color: var(--status-resolved);">Visual Scene Analysis</strong>
         </div>
       </div>
 
@@ -337,6 +337,84 @@
     </table>
   </section>
 
+  <!-- Admin Intelligence Assistant Panel -->
+  <section class="card mt-6 mb-8" style="padding: var(--space-6); background: var(--color-surface); border: 1px solid var(--color-primary-border);">
+    <div class="flex items-center gap-2 mb-2">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-primary);">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+      <h2 style="font-size: 1.25rem; margin: 0;">Admin Intelligence Assistant (AI Copilot)</h2>
+    </div>
+    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: var(--space-4);">
+      Query real-time factual statistics, category distributions, resolution rates, and triage insights in English, Hindi, or Hinglish.
+    </p>
+
+    <div id="adminAssistantLog" style="display: none; background: #ffffff; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-4);">
+      <div id="adminAssistantAnswer" style="font-size: 0.95rem; line-height: 1.6; color: var(--color-heading); margin-bottom: 8px;"></div>
+      <div id="adminAssistantInsights" style="font-size: 0.85rem; color: var(--color-text-muted);"></div>
+    </div>
+
+    <form id="adminAssistantForm" class="flex gap-2">
+      <input type="text" id="adminAssistantQuery" class="form-control" placeholder="e.g. Summarize high-priority reports and category trends..." style="flex: 1;" required>
+      <button type="submit" class="btn btn-primary" id="adminAssistantSubmitBtn">Query Assistant</button>
+    </form>
+  </section>
+
 </div>
 {% endblock %}
 
+{% block extra_js %}
+<script>
+  const adminForm = document.getElementById("adminAssistantForm");
+  const adminQueryInput = document.getElementById("adminAssistantQuery");
+  const adminLog = document.getElementById("adminAssistantLog");
+  const adminAnswer = document.getElementById("adminAssistantAnswer");
+  const adminInsights = document.getElementById("adminAssistantInsights");
+  const adminBtn = document.getElementById("adminAssistantSubmitBtn");
+
+  if (adminForm && adminQueryInput) {
+    adminForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const q = adminQueryInput.value.trim();
+      if (!q) return;
+
+      adminBtn.disabled = true;
+      adminBtn.textContent = "Analyzing...";
+      adminLog.style.display = "block";
+      adminAnswer.innerHTML = "<em>Calculating factual statistics and formulating analysis...</em>";
+      adminInsights.innerHTML = "";
+
+      try {
+        const resp = await fetch("{% url 'api_admin_assistant' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: JSON.stringify({ query: q }),
+        });
+        const data = await resp.json();
+        if (data.answer) {
+          adminAnswer.innerHTML = `<strong>Assistant (${data.detected_language || 'AI'}):</strong> ${data.answer}`;
+          let insightsHtml = "";
+          if (data.key_insights && data.key_insights.length > 0) {
+            insightsHtml += `<div class="mt-2"><strong>Key Insights:</strong><ul>` +
+              data.key_insights.map(i => `<li>${i}</li>`).join("") + `</ul></div>`;
+          }
+          if (data.summary) {
+            insightsHtml += `<div class="mt-1"><strong>Executive Summary:</strong> ${data.summary}</div>`;
+          }
+          adminInsights.innerHTML = insightsHtml;
+        } else {
+          adminAnswer.textContent = "Error: Could not retrieve administrative insights.";
+        }
+      } catch (err) {
+        adminAnswer.textContent = "Connection error while reaching Admin Assistant.";
+      } finally {
+        adminBtn.disabled = false;
+        adminBtn.textContent = "Query Assistant";
+      }
+    });
+  }
+</script>
+{% endblock %}

@@ -1,4 +1,3 @@
-
 from django.urls import path
 from . import views
 
@@ -35,4 +34,8 @@ urlpatterns = [
         views.moderate_incident,
         name="moderate_incident"
     ),
+
+    # AI Assistants
+    path("api/assistant/community/", views.api_community_assistant, name="api_community_assistant"),
+    path("api/assistant/admin/", views.api_admin_assistant, name="api_admin_assistant"),
 ]

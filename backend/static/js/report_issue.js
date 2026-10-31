@@ -81,33 +81,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const geoStatus = document.getElementById("geoStatusMsg");
 
   if (btnLocate) {
-    btnLocate.addEventListener("click", () => {
+    btnLocate.addEventListener("click", function () {
       if (!navigator.geolocation) {
-        if (geoStatus) geoStatus.textContent = "Geolocation is not supported by your browser.";
+        if (geoStatus) {
+          geoStatus.textContent = "Geolocation is not supported by your browser.";
+        }
         return;
       }
 
       btnLocate.disabled = true;
       btnLocate.textContent = "Detecting...";
-      if (geoStatus) geoStatus.textContent = "Requesting location permission...";
+      if (geoStatus) {
+        geoStatus.textContent = "Requesting location permission...";
+      }
 
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        function (position) {
           const lat = position.coords.latitude.toFixed(6);
           const lng = position.coords.longitude.toFixed(6);
           if (inputLat) inputLat.value = lat;
           if (inputLng) inputLng.value = lng;
           if (inputLocation && !inputLocation.value) {
-            inputLocation.value = `Near Coordinates: ${lat}, ${lng}`;
+            inputLocation.value = "Near Coordinates: " + lat + ", " + lng;
           }
           if (geoStatus) {
-            geoStatus.textContent = `Coordinates detected successfully: (${lat}, ${lng})`;
+            geoStatus.textContent = "Coordinates detected successfully: (" + lat + ", " + lng + ")";
             geoStatus.style.color = "var(--status-resolved)";
           }
           btnLocate.disabled = false;
-          btnLocate.textContent = "Location Detected ✓";
+          btnLocate.textContent = "Location Detected \u2713";
         },
-        (error) => {
+        function (error) {
           btnLocate.disabled = false;
           btnLocate.textContent = "Use My Current Location";
           if (geoStatus) {
@@ -120,9 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. AI Category Simulation on Title/Category changes
+  // 3. AI Category Simulation on Title changes
   const titleInput = document.getElementById("issueTitle");
-  const categorySelect = document.getElementById("issueCategory");
   const aiCatSuggestion = document.getElementById("aiCategorySuggestion");
   const aiSevSuggestion = document.getElementById("aiSeveritySuggestion");
 
@@ -154,17 +157,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (reportForm) {
     reportForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+      // Proceeding with form validation
       const title = document.getElementById("issueTitle").value.trim();
       const category = document.getElementById("issueCategory").value;
       const location = document.getElementById("issueLocation").value.trim();
 
       if (!title || !category || !location) {
+        e.preventDefault();
         alert("Please fill in all required fields (Title, Category, and Location).");
         return;
       }
 
-      if (formFeedback) {
+      if (!reportForm.getAttribute("action") && formFeedback) {
+        e.preventDefault();
         formFeedback.innerHTML = `
           <div class="alert alert-success" role="alert">
             <div class="alert-icon">
@@ -187,4 +192,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-

@@ -32,7 +32,8 @@
         <!-- Feedback Alert Container -->
         <div id="reportFormFeedback" aria-live="polite"></div>
 
-        <form id="reportIssueForm" novalidate>
+        <form id="reportIssueForm" method="POST" action="{% url 'report_issue' %}" enctype="multipart/form-data">
+          {% csrf_token %}
           <!-- Issue Title -->
           <div class="form-group">
             <label class="form-label" for="issueTitle">

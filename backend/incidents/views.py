@@ -1,4 +1,7 @@
 
+import json
+from django.http import JsonResponse
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -15,7 +18,20 @@ from .models import (
     Department,
     ModerationNote,
     Notification,
+    DuplicateCandidate,
+    AIAnalysis,
 )
+
+
+from .ai_integration import (
+    process_issue_ai_pipeline,
+    process_issue_photos,
+    compute_priority_inputs,
+    map_priority_band_to_choice,
+    handle_community_assistant_query,
+    handle_admin_assistant_query,
+)
+from ai_services.priority_service import PriorityService
 
 
 User = get_user_model()
@@ -239,8 +255,15 @@ def report_issue(request):
                         user=request.user,
                         issue=issue,
                         title="Report submitted",
-                        message=f"Your report '{issue.title}' was submitted successfully."
+                        message=f"Your report '{issue.title}' was submitted successfully.",
                     )
+
+                # Execute AI triage pipeline (classification, priority, duplicate detection)
+                process_issue_ai_pipeline(issue)
+
+                # Execute photo analysis for any uploaded photos
+                if photos:
+                    process_issue_photos(issue)
 
                 messages.success(
                     request,
@@ -333,7 +356,7 @@ def explore_issues(request):
 def issue_detail(request, report_id):
 
     issue = get_object_or_404(
-        Issue.objects.prefetch_related("photos", "verifications"),
+        Issue.objects.prefetch_related("photos", "verifications", "duplicate_candidates__candidate_issue"),
         pk=report_id
     )
 
@@ -349,6 +372,7 @@ def issue_detail(request, report_id):
             user=request.user
         ).first(),
         "ai_analyses": issue.ai_analyses.all(),
+        "duplicate_candidates": issue.duplicate_candidates.select_related("candidate_issue").all(),
     }
 
     return render(request, "resident/issue_detail.html", context)
@@ -386,7 +410,18 @@ def incident_feedback(request, report_id):
             vote="dispute"
         ).count()
 
-        issue.save(update_fields=["upvotes", "disputes"])
+        # Recalculate priority score with updated verification data
+        s, v, r, a, _ = compute_priority_inputs(issue)
+        p_res = PriorityService.calculate(
+            severity=s,
+            verification=v,
+            recency=r,
+            affected_area=a,
+            immediate_safety_hazard=(issue.ai_severity == "urgent"),
+        )
+        issue.priority_score = p_res.score
+        issue.priority = map_priority_band_to_choice(p_res.band)
+        issue.save(update_fields=["upvotes", "disputes", "priority_score", "priority"])
 
     messages.success(request, "Your feedback has been recorded.")
 
@@ -658,3 +693,63 @@ def moderate_incident(request, report_id):
         messages.error(request, "Unknown moderation action.")
 
     return redirect("admin_moderation")
+
+
+# ==========================================================
+# AI ASSISTANT API ENDPOINTS
+# ==========================================================
+
+@login_required
+@require_POST
+def api_community_assistant(request):
+    """Authenticated endpoint for resident multilingual safety assistant."""
+    try:
+        data = json.loads(request.body.decode("utf-8")) if request.body else {}
+    except (ValueError, UnicodeDecodeError):
+        data = request.POST
+
+    query = (data.get("query") or "").strip()
+    issue_id = data.get("issue_id")
+
+    if not query:
+        return JsonResponse({"error": "Query cannot be empty."}, status=400)
+
+    try:
+        issue_id_int = int(issue_id) if issue_id else None
+    except (ValueError, TypeError):
+        issue_id_int = None
+
+    try:
+        result = handle_community_assistant_query(
+            query=query,
+            user=request.user,
+            issue_id=issue_id_int,
+        )
+        return JsonResponse(result)
+    except Exception as e:
+        return JsonResponse({"error": "Assistant service unavailable.", "detail": str(e)}, status=500)
+
+
+@login_required
+@admin_required
+@require_POST
+def api_admin_assistant(request):
+    """Admin-protected endpoint for administrative intelligence queries."""
+    try:
+        data = json.loads(request.body.decode("utf-8")) if request.body else {}
+    except (ValueError, UnicodeDecodeError):
+        data = request.POST
+
+    query = (data.get("query") or "").strip()
+
+    if not query:
+        return JsonResponse({"error": "Query cannot be empty."}, status=400)
+
+    try:
+        result = handle_admin_assistant_query(
+            query=query,
+            user=request.user,
+        )
+        return JsonResponse(result)
+    except Exception as e:
+        return JsonResponse({"error": "Admin assistant unavailable.", "detail": str(e)}, status=500)

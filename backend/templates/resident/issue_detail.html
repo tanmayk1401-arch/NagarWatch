@@ -4,10 +4,10 @@
 <!-- ==========================================================================
      NagarWatch - Page Template: Issue Details
      File: templates/resident/issue_detail.html
-     Purpose: Full single issue report view, lifecycle timeline, and community validation
+     Purpose: Full single issue report view, lifecycle timeline, AI triage & community assistant
      ========================================================================== -->
 
-{% block title %}Issue Details #101 &bull; NagarWatch{% endblock %}
+{% block title %}Issue #{{ issue.id_code|default:issue.pk }} &bull; NagarWatch{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/pages/issue_detail.css' %}">
@@ -31,13 +31,13 @@
         <div class="issue-detail-header">
           <div class="issue-detail-badges">
             <span class="report-card-category-tag" style="position: static; background: var(--color-primary-subtle); color: var(--color-primary); border: 1px solid var(--color-primary-border); padding: 4px 10px;">
-              Roads &amp; Footpaths
+              {{ issue.category }}
             </span>
-            <span class="status-badge status-pending">Pending Review</span>
-            <span class="priority-badge priority-urgent">Urgent</span>
+            <span class="status-badge {{ issue.get_status_badge_class }}">{{ issue.get_status_display }}</span>
+            <span class="priority-badge {{ issue.get_priority_badge_class }}">{{ issue.get_priority_display }} Priority</span>
           </div>
 
-          <h1 class="issue-detail-title">Large Dangerous Pothole near MG Road Flyover</h1>
+          <h1 class="issue-detail-title">{{ issue.title }}</h1>
 
           <div class="issue-detail-meta">
             <div>
@@ -45,7 +45,7 @@
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
-              <span>MG Road, North Lane, Ward 4</span>
+              <span>{{ issue.location|default:"Hyperlocal Location" }}{% if issue.ward %}, {{ issue.ward }}{% endif %}</span>
             </div>
             <div>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -54,116 +54,135 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              <span>Reported 2 hours ago by Rahul M.</span>
+              <span>Reported {{ issue.created_at|timesince }} ago{% if issue.reported_by %} by {{ issue.reported_by.first_name|default:issue.reported_by.username }}{% endif %}</span>
             </div>
             <div>
-              <span>ID: #NW-101</span>
+              <span>ID: #{{ issue.id_code|default:issue.pk }}</span>
             </div>
           </div>
         </div>
 
         <!-- Issue Photo Showcase -->
         <div class="issue-photo-box">
-          <div class="text-center p-6 text-muted">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto var(--space-2); color: var(--color-text-light);">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <circle cx="8.5" cy="8.5" r="1.5"></circle>
-              <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-            <div style="font-weight: 600;">Uploaded Photo Evidence</div>
-            <div style="font-size: 0.8125rem;">Camera Capture &bull; MG Road North Corner</div>
-          </div>
+          {% if photos %}
+            {% for p in photos %}
+              <div style="text-align: center; margin-bottom: var(--space-3);">
+                <img src="{{ p.image.url }}" alt="{{ p.ai_description|default:issue.title }}" style="max-height: 400px; max-width: 100%; border-radius: var(--radius-md); object-fit: contain;">
+                {% if p.ai_description %}
+                  <div class="text-muted mt-2" style="font-size: 0.8125rem; text-align: left; background: var(--color-surface); padding: 8px 12px; border-radius: var(--radius-sm);">
+                    <strong>AI Visual Scene Analysis:</strong> {{ p.ai_description }}
+                    {% if p.ai_confidence %}<span class="text-muted">({{ p.ai_confidence|floatformat:2 }} match)</span>{% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center p-6 text-muted">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto var(--space-2); color: var(--color-text-light);">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <div style="font-weight: 600;">No Photo Evidence Attached</div>
+              <div style="font-size: 0.8125rem;">Citizen submitted text report only</div>
+            </div>
+          {% endif %}
         </div>
 
         <!-- Problem Description -->
         <div class="issue-description-box">
           <h3>Issue Description</h3>
-          <p>
-            Deep pothole approximately 2.5 feet wide and 6 inches deep causing major traffic bottleneck and severe safety risk to two-wheelers, especially after dusk. Rainwater has pooled inside the crater making it invisible to oncoming night traffic. Immediate gravel patching or asphalt filling requested before monsoon intensifies.
-          </p>
+          <p>{{ issue.description|linebreaksbr|default:"No detailed description provided." }}</p>
         </div>
 
-        <!-- Community Validation Action Bar (Demonstration Only) -->
+        <!-- Community Validation Action Bar -->
         <div class="community-vote-bar">
           <div>
             <div style="font-weight: 700; font-size: 0.9375rem; color: var(--color-heading);">Community Verification</div>
             <div class="text-muted" style="font-size: 0.8125rem;">Help the municipal council prioritize by validating this issue.</div>
           </div>
           <div class="vote-btn-group">
-            <button type="button" class="btn btn-outline btn-sm" id="btnConfirmIssue">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <span>Confirm Problem (<span id="confirmCount">24</span>)</span>
-            </button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btnDisputeIssue">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <span>Dispute (<span id="disputeCount">1</span>)</span>
-            </button>
+            <form method="POST" action="{% url 'incident_feedback' issue.pk %}" style="display: inline;">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="confirm">
+              <button type="submit" class="btn {% if user_vote and user_vote.vote == 'confirm' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Confirm Problem ({{ confirm_count }})</span>
+              </button>
+            </form>
+            <form method="POST" action="{% url 'incident_feedback' issue.pk %}" style="display: inline;">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="dispute">
+              <button type="submit" class="btn {% if user_vote and user_vote.vote == 'dispute' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                <span>Dispute ({{ dispute_count }})</span>
+              </button>
+            </form>
           </div>
         </div>
       </article>
 
-      <!-- Similar Reports Section -->
-      <section class="mb-8" aria-labelledby="similarHeading">
-        <h3 id="similarHeading" class="mb-4">Nearby Civic Issues</h3>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="card" style="padding: var(--space-4);">
-            <div class="flex items-center justify-between mb-2">
-              <span class="status-badge status-verified">Verified</span>
-              <span class="priority-badge priority-high">High</span>
-            </div>
-            <h4 style="font-size: 0.9375rem; margin-bottom: 4px;">Paver block collapse on 14th Cross</h4>
-            <div class="text-muted" style="font-size: 0.8125rem;">350m away &bull; Malleshwaram</div>
-          </div>
-
-          <div class="card" style="padding: var(--space-4);">
-            <div class="flex items-center justify-between mb-2">
-              <span class="status-badge status-in-progress">In Progress</span>
-              <span class="priority-badge priority-medium">Medium</span>
-            </div>
-            <h4 style="font-size: 0.9375rem; margin-bottom: 4px;">Non-functional street light pole #44</h4>
-            <div class="text-muted" style="font-size: 0.8125rem;">600m away &bull; Sector 4 Market</div>
-          </div>
+      <!-- Multilingual Community Assistant Chat Box -->
+      <section class="card mb-8" style="padding: var(--space-5);">
+        <div class="flex items-center gap-2 mb-3">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-primary);">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <h3 style="font-size: 1.1rem; margin: 0;">Community Assistant (English / हिन्दी / Hinglish)</h3>
         </div>
+        <p class="text-muted" style="font-size: 0.8125rem; margin-bottom: var(--space-3);">
+          Ask questions about this issue report, priority levels, resolution SLA, or emergency escalation.
+        </p>
+
+        <div id="assistantChatLog" style="max-height: 250px; overflow-y: auto; background: var(--color-surface); padding: 12px; border-radius: var(--radius-md); margin-bottom: 12px; font-size: 0.875rem;">
+          <div style="color: var(--color-text-muted); font-style: italic;">Ask the assistant anything about NagarWatch or this report...</div>
+        </div>
+
+        <form id="assistantChatForm" class="flex gap-2" data-issue-id="{{ issue.pk }}" data-url="{% url 'api_community_assistant' %}">
+          {% csrf_token %}
+          <input type="text" id="assistantInput" class="form-control" placeholder="Ask in English, Hindi ya Hinglish..." style="flex: 1;" required>
+          <button type="submit" class="btn btn-primary" id="assistantSendBtn">Send</button>
+        </form>
       </section>
     </div>
 
-    <!-- Right Sidebar: Timeline & Geographic Coordinates -->
+    <!-- Right Sidebar: Timeline, Coordinates & AI Intelligence -->
     <div>
       <!-- Status Timeline Card -->
       <aside class="timeline-card" aria-label="Issue Progress Timeline">
         <h3 style="font-size: 1.125rem; margin-bottom: var(--space-2);">Status Lifecycle</h3>
         <p class="text-muted" style="font-size: 0.8125rem; margin-bottom: var(--space-4);">
-          Track the municipal verification and resolution stages.
+          Current Stage: <strong>{{ issue.get_progress_stage_display|default:"Field Verification" }}</strong> ({{ issue.progress_percentage }}%)
         </p>
 
         <ul class="timeline-list">
           <li class="timeline-step is-done">
             <div class="timeline-marker" aria-hidden="true">&#10003;</div>
             <div class="timeline-step-title">Report Submitted</div>
-            <div class="timeline-step-date">Today at 10:15 AM &bull; By Citizen</div>
+            <div class="timeline-step-date">{{ issue.created_at|date:"M d, Y h:i A" }} &bull; By Citizen</div>
           </li>
 
-          <li class="timeline-step is-current">
+          <li class="timeline-step {% if issue.status != 'pending' %}is-done{% else %}is-current{% endif %}">
             <div class="timeline-marker" aria-hidden="true">&bull;</div>
-            <div class="timeline-step-title">Under Ward Verification</div>
-            <div class="timeline-step-date">Assigned to Road Dept Inspector</div>
+            <div class="timeline-step-title">Ward Triage &amp; Moderation</div>
+            <div class="timeline-step-date">Status: {{ issue.get_status_display }}</div>
           </li>
 
-          <li class="timeline-step">
+          <li class="timeline-step {% if issue.status == 'in_progress' %}is-current{% elif issue.status == 'resolved' %}is-done{% endif %}">
             <div class="timeline-marker" aria-hidden="true">&bull;</div>
-            <div class="timeline-step-title">Work Order In Progress</div>
-            <div class="timeline-step-date">Asphalt repair scheduled</div>
+            <div class="timeline-step-title">Crew Dispatch</div>
+            <div class="timeline-step-date">Dept: {{ issue.assigned_department.name|default:"Unassigned" }}</div>
           </li>
 
-          <li class="timeline-step">
+          <li class="timeline-step {% if issue.status == 'resolved' %}is-done{% endif %}">
             <div class="timeline-marker" aria-hidden="true">&bull;</div>
             <div class="timeline-step-title">Resolved &amp; Inspected</div>
-            <div class="timeline-step-date">Pending completion</div>
+            <div class="timeline-step-date">{% if issue.status == 'resolved' %}Resolved{% else %}Pending completion{% endif %}</div>
           </li>
         </ul>
       </aside>
@@ -172,8 +191,8 @@
       <div class="card" style="padding: var(--space-5); margin-bottom: var(--space-6);">
         <h4 style="font-size: 1rem; margin-bottom: var(--space-3);">Location Details</h4>
         <div style="font-size: 0.875rem; margin-bottom: var(--space-3);">
-          <div><strong>Coordinates:</strong> 12.971598, 77.594566</div>
-          <div class="text-muted">Ward 4, North Zone</div>
+          <div><strong>Coordinates:</strong> {{ issue.latitude|default:"--" }}, {{ issue.longitude|default:"--" }}</div>
+          <div class="text-muted">{{ issue.location|default:"Neighborhood" }}</div>
         </div>
         <a href="{% url 'map_view' %}" class="btn btn-outline btn-block btn-sm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -183,16 +202,22 @@
         </a>
       </div>
 
-      <!-- AI Demonstration Insights Panel -->
+      <!-- AI Automated Triage Insights Panel -->
       <div class="card" style="padding: var(--space-5); background-color: var(--color-surface);">
         <span class="report-card-category-tag" style="position: static; display: inline-block; background-color: var(--color-primary-subtle); color: var(--color-primary); border: 1px solid var(--color-primary-border); margin-bottom: var(--space-2);">
-          AI Insights (Demo)
+          AI Intelligence Layer
         </span>
         <h4 style="font-size: 0.9375rem; margin-bottom: var(--space-2);">Automated Triage Summary</h4>
-        <div style="font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5;">
-          <div>&bull; <strong>Detected Category:</strong> Roads &amp; Footpaths (98% match)</div>
-          <div>&bull; <strong>Severity:</strong> Urgent (Risk of night-time skidding)</div>
-          <div>&bull; <strong>Duplicate Check:</strong> 0 active duplicate reports within 500m</div>
+        <div style="font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.6;">
+          <div>&bull; <strong>AI Classified Category:</strong> {{ issue.ai_category|default:issue.category }} ({{ issue.ai_confidence }}% confidence)</div>
+          <div>&bull; <strong>Assessed Severity:</strong> {{ issue.get_ai_severity_display|default:issue.get_priority_display }}</div>
+          <div>&bull; <strong>Composite Priority Score:</strong> {{ issue.priority_score|floatformat:1|default:"--" }} / 100 ({{ issue.get_priority_display }})</div>
+          <div>&bull; <strong>Duplicate Scan:</strong> {{ duplicate_candidates.count }} potential duplicates flagged for review</div>
+          {% if issue.ai_is_duplicate %}
+            <div style="color: var(--status-rejected); font-weight: 600; margin-top: 4px;">
+              &#9888; Flagged for duplicate review with #{{ issue.ai_duplicate_of.id_code|default:issue.ai_duplicate_of.pk }}
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -203,46 +228,65 @@
 
 {% block extra_js %}
 <script>
-  // Simple demonstration click counters for Confirm and Dispute actions
-  const btnConfirm = document.getElementById("btnConfirmIssue");
-  const countConfirm = document.getElementById("confirmCount");
-  const btnDispute = document.getElementById("btnDisputeIssue");
-  const countDispute = document.getElementById("disputeCount");
+  // Interactive Multilingual Community Assistant AJAX
+  (function () {
+    var chatForm = document.getElementById("assistantChatForm");
+    var chatInput = document.getElementById("assistantInput");
+    var chatLog = document.getElementById("assistantChatLog");
+    var sendBtn = document.getElementById("assistantSendBtn");
 
-  let confirmed = false;
-  let disputed = false;
+    if (chatForm && chatInput && chatLog) {
+      var rawIssueId = chatForm.getAttribute("data-issue-id");
+      var assistantUrl = chatForm.getAttribute("data-url") || "/api/assistant/community/";
+      var csrfInput = chatForm.querySelector('input[name="csrfmiddlewaretoken"]');
+      var csrfToken = csrfInput ? csrfInput.value : "";
 
-  if (btnConfirm && countConfirm) {
-    btnConfirm.addEventListener("click", () => {
-      if (!confirmed) {
-        countConfirm.textContent = parseInt(countConfirm.textContent) + 1;
-        btnConfirm.classList.remove("btn-outline");
-        btnConfirm.classList.add("btn-primary");
-        confirmed = true;
-      } else {
-        countConfirm.textContent = parseInt(countConfirm.textContent) - 1;
-        btnConfirm.classList.add("btn-outline");
-        btnConfirm.classList.remove("btn-primary");
-        confirmed = false;
-      }
-    });
-  }
+      chatForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var q = chatInput.value ? chatInput.value.trim() : "";
+        if (!q) return;
 
-  if (btnDispute && countDispute) {
-    btnDispute.addEventListener("click", () => {
-      if (!disputed) {
-        countDispute.textContent = parseInt(countDispute.textContent) + 1;
-        btnDispute.style.backgroundColor = "var(--status-rejected)";
-        btnDispute.style.color = "#ffffff";
-        disputed = true;
-      } else {
-        countDispute.textContent = parseInt(countDispute.textContent) - 1;
-        btnDispute.style.backgroundColor = "";
-        btnDispute.style.color = "";
-        disputed = false;
-      }
-    });
-  }
+        chatLog.innerHTML += '<div style="margin-bottom: 8px;"><strong>You:</strong> ' + q + '</div>';
+        chatInput.value = "";
+        if (sendBtn) {
+          sendBtn.disabled = true;
+          sendBtn.textContent = "Thinking...";
+        }
+
+        fetch(assistantUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+          },
+          body: JSON.stringify({
+            query: q,
+            issue_id: rawIssueId ? parseInt(rawIssueId, 10) : null
+          })
+        })
+          .then(function (resp) {
+            return resp.json();
+          })
+          .then(function (data) {
+            if (data && data.answer) {
+              var lang = data.detected_language || "AI";
+              chatLog.innerHTML += '<div style="margin-bottom: 8px; color: var(--color-primary); background: #f0f7ff; padding: 6px 10px; border-radius: 6px;"><strong>Assistant (' + lang + '):</strong> ' + data.answer + '</div>';
+            } else {
+              chatLog.innerHTML += '<div style="color: var(--status-rejected);">Sorry, could not process your query right now.</div>';
+            }
+          })
+          .catch(function () {
+            chatLog.innerHTML += '<div style="color: var(--status-rejected);">Connection error. Please try again.</div>';
+          })
+          .finally(function () {
+            if (sendBtn) {
+              sendBtn.disabled = false;
+              sendBtn.textContent = "Send";
+            }
+            chatLog.scrollTop = chatLog.scrollHeight;
+          });
+      });
+    }
+  })();
 </script>
 {% endblock %}
-
