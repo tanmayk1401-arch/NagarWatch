@@ -1,0 +1,18 @@
+# ==============================================================================
+# NagarWatch - AI & Intelligence Services Dependencies
+# Responsibility: Member 3 - AI and Intelligence Development
+# Target Python: 3.12+
+# ==============================================================================
+
+# Official Google Gen AI SDK (modern, recommended)
+google-genai>=1.0.0
+
+# Data validation and settings management
+pydantic>=2.10.0,<3.0.0
+
+# Environment variable loading
+python-dotenv>=1.0.1
+
+# Testing & Mocking framework
+pytest>=8.3.0,<9.0.0
+pytest-mock>=3.14.0
