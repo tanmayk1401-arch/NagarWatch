@@ -1,0 +1,86 @@
+/* ==========================================================================
+   NagarWatch - Civic Issue Reporting Platform
+   File: static/css/pages/explore_issues.css
+   Purpose: Styles for Searching, Filtering, and Exploring Community Issues
+   ========================================================================== */
+
+.explore-toolbar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.explore-search-row {
+  margin-bottom: var(--space-4);
+}
+
+.search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon-inside {
+  position: absolute;
+  left: 1rem;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.search-input-wrap .form-control {
+  padding-left: 2.75rem;
+  font-size: 1rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+}
+
+.explore-filters-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.filter-item {
+  flex: 1 1 180px;
+  min-width: 150px;
+}
+
+.filter-item select.form-control {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.explore-results-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+@media (max-width: 1024px) {
+  .explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .explore-grid {
+    grid-template-columns: 1fr;
+  }
+  .filter-item {
+    flex: 1 1 100%;
+  }
+}
+

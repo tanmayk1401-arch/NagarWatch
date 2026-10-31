@@ -60,7 +60,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':[BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,7 +120,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
 
 # Email
@@ -132,3 +131,11 @@ MAILERS = {
     },
 }
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+AUTH_USER_MODEL = "incidents.User"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+AUTH_USER_MODEL = "incidents.User"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

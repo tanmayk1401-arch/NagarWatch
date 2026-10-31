@@ -1,0 +1,197 @@
+/* ==========================================================================
+   NagarWatch - Civic Issue Reporting Platform
+   File: static/css/pages/dashboard.css
+   Purpose: Styles for the Resident Dashboard
+   ========================================================================== */
+
+/* Welcome Banner */
+.dashboard-welcome {
+  background: linear-gradient(135deg, #1D4ED8, #1E40AF);
+  color: #ffffff;
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-welcome::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  bottom: -40px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.dashboard-welcome-content h1 {
+  color: #ffffff;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--space-2);
+}
+
+.dashboard-welcome-content p {
+  color: #BFDBFE;
+  margin-bottom: 0;
+  max-width: 540px;
+  font-size: 1rem;
+}
+
+/* Metric Cards Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.metric-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.metric-total::before { background-color: var(--color-primary); }
+.metric-pending::before { background-color: var(--status-pending); }
+.metric-in-progress::before { background-color: var(--status-in-progress); }
+.metric-resolved::before { background-color: var(--status-resolved); }
+
+.metric-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.metric-number {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-heading);
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.metric-desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-light);
+}
+
+/* Navigation Shortcuts Grid */
+.shortcuts-section {
+  margin-bottom: var(--space-8);
+}
+
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.shortcut-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  text-decoration: none !important;
+  color: inherit;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.shortcut-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.shortcut-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shortcut-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 2px;
+}
+
+.shortcut-desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+/* Section Header Bar */
+.section-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.section-header-bar h2 {
+  margin-bottom: 0;
+}
+
+/* Mobile Breakpoints */
+@media (max-width: 1024px) {
+  .metrics-grid,
+  .shortcuts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-welcome {
+    padding: var(--space-5);
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .shortcuts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

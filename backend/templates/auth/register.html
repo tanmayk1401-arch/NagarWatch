@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- ==========================================================================
+     NagarWatch - Page Template: Registration
+     File: templates/auth/register.html
+     Purpose: New resident registration interface (Frontend demonstration only)
+     ========================================================================== -->
+
+{% block title %}Create Account &bull; NagarWatch{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container auth-wrapper">
+  <div class="auth-card">
+    <!-- Card Header -->
+    <div class="auth-header">
+      <div class="auth-logo-badge" aria-hidden="true">N</div>
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-subtitle">Join your local community to report and track infrastructure issues</p>
+    </div>
+
+    <!-- Alert Container for Client-Side Validation Feedback -->
+    <div id="authFeedback" aria-live="polite"></div>
+
+    <!-- Demonstration Notice -->
+    <div class="demo-credentials-box">
+      <strong>Frontend Demonstration Notice</strong>
+      <div class="demo-credentials-list">
+        <span>&bull; No actual database account is created.</span>
+        <span>&bull; Client-side validation checks your inputs live in browser memory.</span>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <form id="registerForm" novalidate>
+      <!-- Full Name Field -->
+      <div class="form-group">
+        <label class="form-label" for="regFullName">
+          Full Name <span class="required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="regFullName"
+          name="full_name"
+          class="form-control"
+          placeholder="e.g. Divya Sharma"
+          autocomplete="name"
+          required
+          aria-describedby="regFullNameError"
+        >
+        <div class="form-error" id="regFullNameError" role="alert"></div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label class="form-label" for="regEmail">
+          Email Address <span class="required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="email"
+          id="regEmail"
+          name="email"
+          class="form-control"
+          placeholder="e.g. name@example.com"
+          autocomplete="email"
+          required
+          aria-describedby="regEmailError"
+        >
+        <div class="form-error" id="regEmailError" role="alert"></div>
+      </div>
+
+      <!-- Password Field with Show/Hide Toggle -->
+      <div class="form-group">
+        <label class="form-label" for="regPassword">
+          Create Password <span class="required" aria-hidden="true">*</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="password"
+            id="regPassword"
+            name="password"
+            class="form-control"
+            placeholder="At least 6 characters"
+            autocomplete="new-password"
+            required
+            aria-describedby="regPasswordError"
+          >
+          <button
+            type="button"
+            class="btn-password-toggle"
+            data-target="regPassword"
+            aria-label="Show password"
+            title="Toggle password visibility"
+          >
+            <!-- Eye Open Icon -->
+            <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <!-- Eye Closed Icon -->
+            <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;" aria-hidden="true">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="form-error" id="regPasswordError" role="alert"></div>
+      </div>
+
+      <!-- Confirm Password Field with Show/Hide Toggle -->
+      <div class="form-group">
+        <label class="form-label" for="regConfirmPassword">
+          Confirm Password <span class="required" aria-hidden="true">*</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="password"
+            id="regConfirmPassword"
+            name="confirm_password"
+            class="form-control"
+            placeholder="Re-enter your password"
+            autocomplete="new-password"
+            required
+            aria-describedby="regConfirmPasswordError"
+          >
+          <button
+            type="button"
+            class="btn-password-toggle"
+            data-target="regConfirmPassword"
+            aria-label="Show password"
+            title="Toggle password visibility"
+          >
+            <!-- Eye Open Icon -->
+            <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <!-- Eye Closed Icon -->
+            <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;" aria-hidden="true">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="form-error" id="regConfirmPasswordError" role="alert"></div>
+      </div>
+
+      <!-- Terms and Guidelines Checkbox -->
+      <div class="form-group mb-4">
+        <label class="form-check">
+          <input type="checkbox" id="regTerms" class="form-check-input" required aria-describedby="regTermsError">
+          <span class="form-check-label">
+            I agree to the <a href="#terms" onclick="alert('Civic Reporting Guidelines: Reports must be genuine community concerns with respectful language.'); return false;">Community Guidelines</a> for civic issue reporting.
+          </span>
+        </label>
+        <div class="form-error" id="regTermsError" role="alert"></div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary btn-block btn-lg">
+        <span>Create Account</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </form>
+
+    <!-- Footer Switch to Login -->
+    <div class="auth-footer">
+      <span>Already have an account?</span>
+      <a href="{% url 'login' %}">Sign in here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}
+

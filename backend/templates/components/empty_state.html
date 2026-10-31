@@ -1,0 +1,19 @@
+<!-- ==========================================================================
+     NagarWatch - Shared Component: Empty State
+     File: templates/components/empty_state.html
+     Usage: {% include 'components/empty_state.html' with title='No Reports Found' description='Try adjusting your search criteria.' action_url='...' action_text='Report an Issue' %}
+     ========================================================================== -->
+<div class="empty-state">
+  <div class="empty-state-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+    </svg>
+  </div>
+  <h3 class="empty-state-title">{{ title|default:"No items to display" }}</h3>
+  <p class="empty-state-description">{{ description|default:"There is no demonstration data available for this view currently." }}</p>
+  {% if action_url and action_text %}
+    <a href="{{ action_url }}" class="btn btn-primary btn-sm">{{ action_text }}</a>
+  {% endif %}
+</div>
+

@@ -1,0 +1,142 @@
+/* ==========================================================================
+   NagarWatch - Civic Issue Reporting Platform
+   File: static/css/pages/report_issue.css
+   Purpose: Styles for the Issue Reporting Form and AI Assistant Placeholders
+   ========================================================================== */
+
+.report-form-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-8);
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+  border: 2px dashed var(--color-border-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  background-color: var(--color-surface);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.dragover {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-subtle);
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-3);
+  color: var(--color-primary);
+}
+
+.upload-preview-container {
+  display: none;
+  margin-top: var(--space-4);
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  max-width: 320px;
+  border: 1px solid var(--color-border);
+}
+
+.upload-preview-container.has-image {
+  display: block;
+}
+
+.upload-preview-container img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+.btn-remove-photo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(185, 28, 28, 0.9);
+  color: #ffffff;
+  border: none;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Location Controls */
+.location-input-wrapper {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.geo-coordinates-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+/* AI Assistant Demonstration Panel */
+.ai-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 5rem;
+}
+
+.ai-panel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--color-primary-border);
+}
+
+.ai-suggestion-box {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-3);
+  font-size: 0.875rem;
+}
+
+.ai-suggestion-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.ai-suggestion-val {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .report-form-layout {
+    grid-template-columns: 1fr;
+  }
+  .ai-panel {
+    position: static;
+  }
+}
+
