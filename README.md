@@ -238,7 +238,7 @@ Resident submits issue → Backend sends text/image to AI → AI returns categor
 - **Tanmay Kapoor** — [@tanmayk1401-arch](https://github.com/tanmayk1401-arch)
 - **Divyam Chechani** - (https://github.com/divyamchechani)
 - **Himanshu Raj**
-- **Divya Rathore
+- **Divya Rathore**
 
 ## 📄 License
 
